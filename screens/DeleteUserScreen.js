@@ -56,12 +56,23 @@ export default class DeleteUserScreen extends Component {
     {
       snapshot.ref.remove();
    });
-  //   ttest.remove();
       let ttest10=database.ref('users').child(id1);
       ttest10.remove();
      
 
+     database.ref('reclamations').child(key_to_delete).remove();
+      
+     var query1 = database.ref('achat').orderByChild("iliyechri").equalTo(key_to_delete);
+     query1.on('child_added', function(snapshot)
+     {
+       snapshot.ref.remove();
+    });
 
+    var query2 = database.ref('achat').orderByChild("moulaproduit").equalTo(key_to_delete);
+    query2.on('child_added', function(snapshot)
+    {
+      snapshot.ref.remove();
+   });
 } ;
 
 
