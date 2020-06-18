@@ -180,6 +180,8 @@ export default class HomeAdminScreen extends React.Component {
                          <View>
                          <Text style={styles.name}>{item.authorUsername}</Text>
                           <Text style={styles.timestamp}>{item.posted}</Text>
+                          <Text style={styles.post}>{item.caption}</Text>
+
                           </View>
                  
                            </View>
@@ -259,6 +261,10 @@ const styles = StyleSheet.create({
         height: 150,
         borderRadius: 5,
         marginVertical: 16
+    } , post: {
+        marginTop: 16,
+        fontSize: 14,
+        color: "#838899"
     }
 });
 

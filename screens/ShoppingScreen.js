@@ -8,7 +8,7 @@ import {
   Image,
   Dimensions,Button
 } from 'react-native';
-import { TouchableOpacity,Alert,TouchableHighlight } from "react-native";
+import { TouchableOpacity,Alert,TouchableHighlight,Linking } from "react-native";
 import {FlatList} from 'react-native-gesture-handler';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { Ionicons } from "@expo/vector-icons";
@@ -23,6 +23,8 @@ export default class ShoppingScreen extends Component {
       
       dataSource: [],
       loaded: false,
+      phoneNumber:""
+
      
     };
   }
@@ -39,6 +41,7 @@ export default class ShoppingScreen extends Component {
                              data.push({
                               prix:child.val().prix,
                               image:child.val().image,
+                              telmoulaproduit:child.val().telmoulaproduit,
                               moulaproduit:snapshot.val(),
                               iliyechri:snapshot1.val(),
                               telmoulaproduit:child.val().telmoulaproduit,
@@ -82,7 +85,12 @@ export default class ShoppingScreen extends Component {
 
 
 
+   call=(phone)=>{
+    //const { phoneNumber } = this.state
 
+    Linking.openURL(`tel:${phone}`)
+    this.setState({phoneNumber:phone})
+  }
 
   separator = () => {
     return (
@@ -115,13 +123,16 @@ export default class ShoppingScreen extends Component {
                             ? { uri: item.image }
                             : require("../assets/tempAvatar.jpg")
                              }
-                             style={{width:80, height:80,borderRadius:5,marginLeft:10,margin:10}} 
+                             style={{width:80, height:80,borderRadius:5,marginLeft:10,margin:20}} 
                                 />
                                 <View style={{padding:20,paddingRight:80,width: '80%',flexDirection:'row', justifyContent: 'space-between'}}>
-                              <Text>This article was purchased by the customer {item.iliyechri} from the seller {item.moulaproduit} at this price {item.prix} Dt.</Text>
+                              <Text>This article was purchased by the customer {item.iliyechri} from the seller {item.moulaproduit} at this price {item.prix}Dt.The phone number of {item.moulaproduit} is  {item.telmoulaproduit} </Text>
                               <View style={{height:50,width:50, justifyContent:"center",alignItems:"center"}}>
-                              <MaterialIcons name="done" size={35} color="green" style={{marginLeft:15}} />
-                              </View>
+                              
+
+                              <TouchableOpacity  onPress={()=> this.call(item.telmoulaproduit)} style={{height:50,width:50, justifyContent:"center",alignItems:"center"}}>
+                   <Text style={styles.call} >Call</Text>
+               </TouchableOpacity></View>
                              </View>
                           </View>
                             
@@ -171,6 +182,11 @@ shopping:{
    fontWeight:'bold',
  
 },
+call:{
+  color:"green",
+  fontSize:20,
+  fontWeight:'bold',
+   },
  
 addButton: {
   backgroundColor: '#E9446A',

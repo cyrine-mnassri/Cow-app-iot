@@ -184,7 +184,7 @@ const Admin = createStackNavigator(
                  
                 },
                 tabBarOptions: {
-                    activeTintColor: "#161F3D",
+                    activeTintColor: "#E9446A",
                     inactiveTintColor: "#B8BBC4",
                     showLabel: false
                 }
