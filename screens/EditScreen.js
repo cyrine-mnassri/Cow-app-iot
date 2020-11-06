@@ -1,3 +1,5 @@
+
+
 import React from "react";
 import {TextInput, ActivityIndicator, View, Text, StyleSheet, TouchableOpacity, Image} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
@@ -5,7 +7,7 @@ import * as Permissions from 'expo-permissions';
 import * as ImagePicker from "expo-image-picker";
 import {f, auth, database, storage} from "../config/config.js";
 
-export default class PostScreen extends React.Component {
+export default class EditScreen extends React.Component {
 
     constructor(propos) {
         super(propos);
@@ -14,7 +16,12 @@ export default class PostScreen extends React.Component {
             imageId: this.uniqueId(),
             imageSelected: false,
             uploading: false,
-            caption: '',
+            animaltype: '',
+           animalreference: '',
+           animalweight:'',
+           animalbirth:'',
+           animalbreed:'',
+           animalhealth:'',
             progress: 0
 
         }
@@ -139,29 +146,47 @@ export default class PostScreen extends React.Component {
         var imageId = this.state.imageId;
         var userId = f.auth().currentUser.uid;
 
-        var caption = this.state.caption;
+        var animaltype = this.state.animaltype;
+        var animalreference = this.state.animalreference;
+        var animalweight = this.state.animalweight;  
+        var animalbirth = this.state.animalbirth; 
+        var animalbreed = this.state.animalbreed;
+        var animalhealth = this.state.animalhealth;
+       
+
+
 
         var dateTime = Date.now();
         var timestamp = Math.floor(dateTime / 1000);
 
 
         var photoObj = {
-            author: userId,
-            caption: caption,
-            posted: timestamp,
-            url: imageUrl
+          author: userId,
+         animaltype : animaltype,
+         animalreference :animalreference,
+         animalweight: animalweight,
+         animalbirth :animalbirth, 
+         animalbreed :animalbreed,
+         animalhealth :animalhealth,
+         posted: timestamp,
+          url: imageUrl
 
 
-        };
+        } ;
 
         database.ref('/photos/' + imageId).set(photoObj);
         database.ref('/users/'+userId+'/photos/' + imageId).set(photoObj);
-        alert('Image Uploaded !!!');
+        alert('Animal saved ');
 
         this.setState({
             uploading: false,
             imageSelected : false,
-            caption: '',
+            animaltype : '',
+            animalreference :'',
+            animalweight: '',
+            animalbirth :'', 
+            animalbreed :'',
+            animalhealth :'',
             uri:''
 
 
@@ -174,29 +199,115 @@ export default class PostScreen extends React.Component {
 
     render() {
         return (
+            
             <View style={{flex:1}}>
-                {this.state.imageSelected == true ? (
+                 <TouchableOpacity
+
+onPress={()=> this.props.navigation.navigate("Animal")}>
+<Text style={{fontSize:20, fontWeight:'bold'}}>Go Back</Text>
+</TouchableOpacity>
                     <View style={{flex:1}}>
 
-                        <View style={styles.header}>
-                            <Text style={styles.headerTitle}>Upload</Text>
-
-                        </View>
                         <View style={{padding:5}}>
-                            <Text style={{marginTop : 5}}>Text:</Text>
+                            <Text style={{marginTop : 2}}>Animal type</Text>
                             <TextInput
                                 editable={true}
                                 autoFocus={true}
                                 multiline={true}
                                 numberOfLines={4}
-                                style={{ marginVertical:10, height:100, padding: 5, borderColor: 'grey', borderWidth:1,borderRadius:3,backgroundColor:'white', color:'black'}}
-                                placeholder="Want to share something?"
-                                onChangeText={text => this.setState({ caption:text })}
+                                style={{ marginVertical:10, height:30, padding: 5, borderColor: 'grey', borderWidth:1,borderRadius:3,backgroundColor:'white', color:'black'}}
+                               
+                                onChangeText={text => this.setState({ animaltype:text })}
                                 value={this.state.text}
                             />
+
+
+
+
+
+                            <Text style={{marginTop : 2}}>Animal reference</Text>
+                            <TextInput
+                                editable={true}
+                                autoFocus={true}
+                                multiline={true}
+                                numberOfLines={4}
+                                style={{ marginVertical:10, height:30, padding: 5, borderColor: 'grey', borderWidth:1,borderRadius:3,backgroundColor:'white', color:'black'}}
+                               
+                                onChangeText={text => this.setState({ animalreference:text })}
+                                value={this.state.text}
+                            />
+
+                            
+                           <Text style={{marginTop : 2}}>Animal weight (Kg)</Text>
+                            <TextInput
+                                editable={true}
+                                autoFocus={true}
+                                multiline={true}
+                                numberOfLines={4}
+                                style={{ marginVertical:10, height:30, padding: 5, borderColor: 'grey', borderWidth:1,borderRadius:3,backgroundColor:'white', color:'black'}}
+                             
+                                onChangeText={text => this.setState({ animalweight:text })}
+                                value={this.state.text}
+                            />
+
+
+
+
+
+                        <Text style={{marginTop : 2}}>Birth</Text>
+                            <TextInput
+                                editable={true}
+                                autoFocus={true}
+                                multiline={true}
+                                numberOfLines={4}
+                                style={{ marginVertical:10, height:30, padding: 5, borderColor: 'grey', borderWidth:1,borderRadius:3,backgroundColor:'white', color:'black'}}
+                              
+                                onChangeText={text => this.setState({ animalbirth:text })}
+                                value={this.state.text}
+                            />
+                        <Text style={{marginTop : 2}}>Breed</Text>
+                            <TextInput
+                                editable={true}
+                                autoFocus={true}
+                                multiline={true}
+                                numberOfLines={4}
+                                style={{ marginVertical:10, height:30, padding: 5, borderColor: 'grey', borderWidth:1,borderRadius:3,backgroundColor:'white', color:'black'}}
+                          
+                                onChangeText={text => this.setState({ animalbreed:text })}
+                                value={this.state.text}
+                            />
+
+
+
+
+
+
+
+
+                              <Text style={{marginTop : 2}}>Current Health-state</Text>
+                            <TextInput
+                                editable={true}
+                                autoFocus={true}
+                                multiline={true}
+                                numberOfLines={4}
+                                style={{ marginVertical:10, height:30, padding: 5, borderColor: 'grey', borderWidth:1,borderRadius:3,backgroundColor:'white', color:'black'}}
+                              
+                                onChangeText={text => this.setState({ animalhealth:text })}
+                                value={this.state.text}
+                            />
+
+
+
+
+
+
+
+
+
+
                             <TouchableOpacity onPress={()=> this.uploadPublish()}
-                                              style={{alignSelf:'center', width:170,marginHorizontal:'auto', backgroundColor:'purple', borderRadius:5, paddingVertical:10, paddingHorizontal:20}}>
-                                <Text style={{textAlign:'center', color:'white'}}>Upload & Publish</Text>
+                                              style={{alignSelf:'center', width:170,marginHorizontal:'auto', backgroundColor:"#00ff00", borderRadius:5, paddingVertical:10, paddingHorizontal:20}}>
+                                <Text style={{textAlign:'center', color:'white'}}>Save Animal</Text>
                             </TouchableOpacity>
 
                             { this.state.uploading == true ? (
@@ -221,17 +332,7 @@ export default class PostScreen extends React.Component {
 
                     </View>
 
-                ) : (
-
-
-                    <View style={styles.container}>
-                        <Text>Upload Your Image</Text>
-                        <Text></Text>
-                        <TouchableOpacity onPress={()=> this.findNewImage()}>
-                            <Ionicons name="md-camera" size={60} color="#D8D9DB"></Ionicons>
-                        </TouchableOpacity>
-                    </View>
-                )}
+                
             </View>
         );
     }

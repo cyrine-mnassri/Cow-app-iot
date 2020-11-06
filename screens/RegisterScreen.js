@@ -25,15 +25,7 @@ export default class RegisterScreen extends React.Component {
         };
     }
 
-    // state = {
-    //     user: {
-    //         name: "",
-    //         email: "",
-    //         password: "",
-    //         avatar: null
-    //     },
-    //     errorMessage: null
-    // };
+ 
 
     creeateUserObj = (userObj, email,username,name)=> {
         var uObj = {
@@ -90,24 +82,13 @@ export default class RegisterScreen extends React.Component {
             <View style={styles.container}>
                 <StatusBar barStyle="light-content"></StatusBar>
 
-                <Image
-                    source={require("../assets/authFooter.png")}
-                    style={{ position: "absolute", bottom: -105, right: -225}}
-                ></Image>
+                
 
                 <View style={{ position: "absolute", top: 24, alignItems: "center", width: "100%" }}>
 
-                    <TouchableOpacity style={styles.avatarPlaceholder} onPress={this.handlePickAvatar}>
-                        <Image source={{ uri: this.state.avatar }} style={styles.avatar}/>
-                        <Ionicons
-                            name="ios-add"
-                            size={30}
-                            color="#FFF"
-                            style={{ marginTop: 2, marginLeft: 2 }}
-                        ></Ionicons>
-                    </TouchableOpacity>
+                   
                 </View>
-                <Text style={styles.greeting}>{`Hello!`}</Text>
+                <Text style={styles.greeting}>{`Let's join our community`}</Text>
                 <View style={styles.errorMessage}>
                     {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
                 </View>
@@ -155,7 +136,7 @@ export default class RegisterScreen extends React.Component {
                 </View>
 
                 <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
-                    <Text style={{ color: "#FFF", fontWeight: "500" }}>Sign up</Text>
+                    <Text style={{ color: "#FFF", fontWeight: "500" }}>Register</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -163,7 +144,7 @@ export default class RegisterScreen extends React.Component {
                     onPress={() => this.props.navigation.navigate("Login")}
                 >
                     <Text style={{ color: "#414959", fontSize: 13 }}>
-                        Already have an account? <Text style={{ fontWeight: "500", color: "#E9446A" }}>Sign in</Text>
+                        Already have an account? <Text style={{ fontWeight: "500", color:"#00ff00" }}>Login now</Text>
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -207,7 +188,7 @@ const styles = StyleSheet.create({
     },
     button: {
         marginHorizontal: 30,
-        backgroundColor: "#E9446A",
+        backgroundColor: "#00ff00",
         borderRadius: 4,
         height: 52,
         alignItems: "center",
@@ -241,23 +222,3 @@ const styles = StyleSheet.create({
 });
 
 
-// import React from "react";
-// import { View, Text, StyleSheet } from "react-native";
-//
-// export default class RegisterScreen extends React.Component {
-//     render() {
-//         return (
-//             <View style={styles.container}>
-//                 <Text>register Screen</Text>
-//             </View>
-//         );
-//     }
-// }
-//
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         alignItems: "center",
-//         justifyContent: "center"
-//     }
-// });

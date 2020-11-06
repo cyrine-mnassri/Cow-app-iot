@@ -7,22 +7,30 @@ import {createBottomTabNavigator} from "react-navigation-tabs";
 import {Ionicons,Entypo,MaterialIcons ,AntDesign} from "@expo/vector-icons";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import loadingscreens from "./screens/loadingscreens";
+import OnboardingScreen from "./screens/OnboardingScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
-import HomeAdminScreen from "./screens/HomeAdminScreen";
-import DeleteUserScreen from "./screens/DeleteUserScreen";
-import ProfileAdminScreen from "./screens/ProfileAdminScreen";
-import HomeScreen from "./screens/HomeScreen";
-import ShoppingScreen from "./screens/ShoppingScreen";
-import Commentss from "./screens/Comments";
-import PostScreen from "./screens/PostScreen";
-import NotificationScreen from "./screens/NotificationScreen";
-import ProfileScreen from "./screens/ProfileScreen";
-import UserProfil from "./screens/UserProfil";
-import * as firebase from 'firebase';
-import {decode, encode} from 'base-64'
-import ReclamationScreen from './screens/ReclamationScreen';
+import Forgot from './screens/Forgot';
 
+
+import Screen1 from "./screens/Screen1";
+import Screen2 from "./screens/Screen2";
+import Screen3 from "./screens/Screen3";
+import Screen4 from './screens/Screen4';
+import ProfileAdminScreen from "./screens/ProfileAdminScreen";
+
+
+import AnimalScreen from "./screens/AnimalScreen";
+import EditScreen from "./screens/EditScreen";
+import HealthReport from "./screens/HealthReport";
+
+import VetsScreen from "./screens/VetsScreen";
+import AddAnimalScreen from "./screens/AddAnimalScreen";
+import TrakingScreen from "./screens/TrakingScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+
+import {decode, encode} from 'base-64'
+import { FontAwesome5 } from '@expo/vector-icons'; 
 if (!global.btoa) {
     global.btoa = encode
 }
@@ -30,44 +38,33 @@ if (!global.btoa) {
 if (!global.atob) {
     global.atob = decode
 }
-// héthya firebase configuration
-// const firebaseConfig = {
-//     apiKey: "AIzaSyC9FemRYyjg09dAZ2K6Qf0q_IoKDlLkcUw",
-//     authDomain: "projetlabesni.firebaseapp.com",
-//     databaseURL: "https://projetlabesni.firebaseio.com",
-//     projectId: "projetlabesni",
-//     storageBucket: "projetlabesni.appspot.com",
-//     messagingSenderId: "680868658843",
-//     appId: "1:680868658843:web:2b911e8ad58ed55fea103e",
-//     measurementId: "G-248T43CJVX"
-// };
-// firebase.initializeApp(firebaseConfig);
 
 
 const AppContainer = createStackNavigator(
     {
         default: createBottomTabNavigator(
             {
-                Home: {
-                    screen: HomeScreen,
+                Animal: {
+                    screen: AnimalScreen,
                     navigationOptions: {
                         tabBarIcon: ({tintColor}) => <Ionicons name="ios-home" size={24} color={tintColor}/>
                     }
                 },
-                Message: {
-                    screen: Commentss,
+                Vets: {
+                    screen: VetsScreen,
                     navigationOptions: {
-                        tabBarIcon: ({tintColor}) => <Ionicons name="ios-chatboxes" size={24} color={tintColor}/>
+                        tabBarIcon: ({tintColor}) => <FontAwesome5 name="clinic-medical" size={24} color={tintColor}/>
                     }
                 },
-                Post: {
-                    screen: PostScreen,
+                
+                AddAnimal: {
+                    screen: AddAnimalScreen,
                     navigationOptions: {
                         tabBarIcon: ({tintColor}) => (
                             <Ionicons
                                 name="ios-add-circle"
                                 size={48}
-                                color="#E9446A"
+                                color="#00ff00"
                                 style={{
                                     shadowColor: "#E9446A",
                                     shadowOffset: { width: 0, height: 10 },
@@ -75,13 +72,14 @@ const AppContainer = createStackNavigator(
                                     shadowOpacity: 0.3
                                 }}
                             />
+                            
                         )
                     }
                 },
-                Notification: {
-                    screen: NotificationScreen,
+                Traking: {
+                    screen: TrakingScreen,
                     navigationOptions: {
-                        tabBarIcon: ({tintColor}) => <Ionicons name="ios-notifications" size={24} color={tintColor}/>
+                        tabBarIcon: ({tintColor}) => <Entypo name="location"  size={24} color={tintColor}/>
                     }
                 },
                 Profile: {
@@ -94,7 +92,7 @@ const AppContainer = createStackNavigator(
             {
                 defaultNavigationOptions: {
                     tabBarOnPress: ({navigation, defaultHandler}) => {
-                        if (navigation.state.key === "Post") {
+                        if (navigation.state.key === "AddAnimal") {
                             navigation.navigate("postModal");
                         } else {
                             defaultHandler();
@@ -109,7 +107,7 @@ const AppContainer = createStackNavigator(
             }
         ),
         postModal: {
-            screen: PostScreen
+            screen: AddAnimalScreen
         }
     },
     {
@@ -121,20 +119,29 @@ const AppContainer = createStackNavigator(
 
 const AuthStack = createStackNavigator({
     Register: RegisterScreen,    
-    Login: LoginScreen
+    Login: LoginScreen,
+    forgot:Forgot,
+	onboardingScreen:OnboardingScreen
+
     },
     {
-        initialRouteName:"Login"
+        initialRouteName:"onboardingScreen"
     }
 );
 
-const UsProfil =  createStackNavigator({
-   userprofil:UserProfil
 
+const Edit =  createStackNavigator({
+    edit:EditScreen,
+ 
+ 
+ });
+ 
 
-});
-
-
+const report =  createStackNavigator({
+   healthReport :HealthReport
+ 
+ 
+ });
 
  
 
@@ -143,15 +150,15 @@ const Admin = createStackNavigator(
     {
         default: createBottomTabNavigator(
             {
-                HomeAdmin: {
-                    screen: HomeAdminScreen,
+                Screen1: {
+                    screen: Screen1,
                     navigationOptions: {
                         tabBarIcon: ({tintColor}) => <Ionicons name="ios-home" size={24} color={tintColor}/>
                     }
                 },
               
-                DeleteUser: {
-                    screen: DeleteUserScreen,
+                Screen2: {
+                    screen: Screen2,
                     navigationOptions: {
                         tabBarIcon: ({tintColor}) => <AntDesign name="deleteuser" size={24} color={tintColor}/>
                       
@@ -159,14 +166,14 @@ const Admin = createStackNavigator(
                 },
                 
               
-                Reclamation: {
-                    screen: ReclamationScreen,
+                Screen3: {
+                    screen: Screen3,
                     navigationOptions: {
                         tabBarIcon: ({tintColor}) => <AntDesign name="solution1" size={24} color={tintColor}/>
                     }
                 },
-                Shopping: {
-                    screen: ShoppingScreen,
+                Screen4: {
+                    screen: Screen4,
                     navigationOptions: {
                         tabBarIcon: ({tintColor}) => <MaterialIcons name="shopping-cart" size={24} color={tintColor}/>
                       
@@ -191,7 +198,7 @@ const Admin = createStackNavigator(
             }
         ),
         postModal: {
-            screen: HomeAdminScreen
+            screen: ProfileAdminScreen
         }
     },
     {
@@ -217,12 +224,12 @@ export default createAppContainer(
         {
 
             loading: loadingscreens,
-            comments:Commentss,
             // loading: HomeScreen,
             App: AppContainer,
             Auth: AuthStack,
-            Usp:UsProfil,
             Admin: Admin,
+            rep:report,
+            edt:Edit
             
         },
         {

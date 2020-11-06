@@ -82,7 +82,13 @@ class PhotoList extends React.Component {
             photo_feed.push({
                 id: photo,
                 url: photoObjt.url,
-                caption: photoObjt.caption,
+                
+                animaltype : photoObjt.animaltype,
+                animalreference : photoObjt.animalreference,
+                animalweight: photoObjt.animalweight ,
+                animalbirth : photoObjt.animalbirth, 
+                animalbreed : photoObjt.animalbreed,
+                animalhealth :photoObjt.animalhealth,
                 posted: that.timeConverter(photoObjt.posted),
                 authorUsername: data.username,
                 authorAvatar: data.avatar,
@@ -156,46 +162,31 @@ class PhotoList extends React.Component {
 
                     <FlatList
                         refreshing={this.state.refresh}
+                        ItemSeparatorComponent={() => <Text>     </Text>}
                         onRefresh={this.loadNew}
                         data={this.state.photo_feed}
+                        horizontal={true}
                         keyExtractor={(item, index) => index.toString()}
                         style={styles.la}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item,index }) => (
                         <View style={styles.labseniItem}>
-                              <Image
-                                    source={
-                                       item.authorAvatar
-                                     ? { uri: item.authorAvatar }
-                                  : require("../assets/tempAvatar.jpg")
-                                                             }
-                                    style={styles.avatar}
-                                />
+                            
                         <View style={{ flex: 1 }}>
                          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                          <View>
-                          <TouchableOpacity onPress={() => this.props.navigation.navigate('userprofil',{userId: item.authorId })}   >
                          <Text style={styles.name}>{item.authorUsername}</Text>
-                         </TouchableOpacity>
-                          <Text style={styles.timestamp}>{item.posted}</Text>
+                       
                           </View>
                  
                            </View>
-                           <Text style={styles.post}>{item.caption}</Text>
                            <Image source={{uri:item.url}} style={styles.postImage} resizeMode="cover"/>
-                           <View style={{ flexDirection: "row" }}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Message',{photoId: item.id })}   >
+                           <Text style={styles.post1}>{item.animalreference}</Text>
+                           <Text style={styles.post2}>{item.animalhealth}</Text>
+                           <Text style={styles.timestamp}>{item.posted}</Text>
 
-                             <Ionicons name="ios-chatboxes" size={35} color="#73788B"/>
-
-
-                           </TouchableOpacity>
-                             {this.state.idididuser == item.authorId &&
-                              <TouchableOpacity onPress={()=> this.del(item.authorId,item.id)}  >
-                           <Ionicons name="ios-trash" size={35} color="#73788B" style={{marginLeft:40}} />
-                            </TouchableOpacity>
-                            }
-                             </View>
+                           
+                      
                              </View>
                               </View>
 
@@ -239,8 +230,9 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFF",
         borderRadius: 5,
         padding: 8,
-        flexDirection: "row",
-        marginVertical: 8
+        flexDirection: "column",
+        margin: 1, width:150,
+        height: 250
     },
     avatar: {
         width: 36,
@@ -255,19 +247,30 @@ const styles = StyleSheet.create({
     },
     timestamp: {
         fontSize: 11,
-        color: "#C4C6CE",
+        color: "#000000",
         marginTop: 4
     },
     post: {
         marginTop: 16,
         fontSize: 14,
-        color: "#838899"
+        color: "#000000"
+    }, post1: {
+        marginTop: 16,
+     
+        color: "#000000",
+        fontSize: 20,
+        fontWeight: "500"
+    },   post2: {
+        marginTop: 16,
+        fontSize: 14,
+        color: "#000000",    backgroundColor: "#FFF",
     },
     postImage: {
-        width: undefined,
-        height: 150,
+        width: 145,
+        height: 100,
         borderRadius: 5,
-        marginVertical: 16
+        marginRight:15
+
     }
 });
 

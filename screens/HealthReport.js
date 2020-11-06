@@ -8,6 +8,7 @@ import {
   Image,
   Dimensions,Button
 } from 'react-native';
+import { AntDesign } from '@expo/vector-icons'; 
 import SearchBar from 'react-native-search-bar';
 
 import { TouchableOpacity,Alert } from "react-native";
@@ -16,7 +17,7 @@ import { Ionicons } from "@expo/vector-icons";
 import {f, auth, database, storage} from "../config/config.js"
 const {width, height} = Dimensions.get('window');
 
-export default class DeleteUserScreen extends Component {
+export default class HealthReport extends Component {
   constructor() {
     super();
     this.state = {
@@ -30,14 +31,17 @@ export default class DeleteUserScreen extends Component {
 
 
   componentDidMount(){
-    database.ref('users').on('value', (snapshot) =>{
+
+    const userid=f.auth().currentUser.uid
+    database.ref('users').child(userid).child('photos').on('value', (snapshot) =>{
       var data = []
       snapshot.forEach((child)=>{
        data.push({
         key: child.key,
-        name:child.val().name,
-        email:child.val().email,
-        avatar:child.val().avatar
+        animalhealth:child.val().animalhealth,
+        animalreference:child.val().animalreference,
+        url:child.val().url,
+       
         
       })
     })
@@ -56,23 +60,8 @@ export default class DeleteUserScreen extends Component {
     {
       snapshot.ref.remove();
    });
-      let ttest10=database.ref('users').child(id1);
-      ttest10.remove();
-     
-
-     database.ref('reclamations').child(key_to_delete).remove();
-      
-     var query1 = database.ref('achat').orderByChild("iliyechri").equalTo(key_to_delete);
-     query1.on('child_added', function(snapshot)
-     {
-       snapshot.ref.remove();
-    });
-
-    var query2 = database.ref('achat').orderByChild("moulaproduit").equalTo(key_to_delete);
-    query2.on('child_added', function(snapshot)
-    {
-      snapshot.ref.remove();
-   });
+    
+    
 } ;
 
 
@@ -100,7 +89,7 @@ _twoOptionAlertHandler=(id)=>{
       //title
       'Confirm',
       //body
-      'Are you sure you want to delete this user ?',
+      'Are you sure you want to delete this animal ?',
       [
         {text: 'Yes', onPress:()=> this.del(id)},
         {text: 'No', onPress: () => console.log('No Pressed'), style: 'cancel'},
@@ -142,19 +131,17 @@ _twoOptionAlertHandler=(id)=>{
         
       <View style={styles.container}>
 
-        <View style={styles.header}>
-           
-          <Text style={styles.find}>Find client</Text>
 
-          <TextInput
-            placeholder="Enter client name"
-            placeholderTextColor="gray"
-            value={this.state.query}
-            onChange={this.filterItem.bind(this)}
-            style={styles.input}
-          />
+                <View style={{flexDirection:'row', height: 50,paddingTop:20, backgroundColor:'white', borderColor:'lightgrey' ,borderBottomWidth:0.2,  alignItems: "center",
+        justifyContent: "center"}}>
+                    <TouchableOpacity
 
-        </View>
+                        onPress={()=> this.props.navigation.navigate("Animal")}>
+                        <Text style={{fontSize:20, fontWeight:'bold'}}>Go Back</Text>
+                    </TouchableOpacity>
+
+              
+</View>
            
 
         <View style={{height: 10, width: '100%', backgroundColor: '#e5e5e5'}} />
@@ -165,22 +152,26 @@ _twoOptionAlertHandler=(id)=>{
           renderItem={({item, index}) => {
             return (
             <View style={styles.listItem}>
-              
-                        <Image
+                 <Image
                            source={
-                           item.avatar
-                            ? { uri: item.avatar }
+                           item.url
+                            ? { uri: item.url }
                             : require("../assets/tempAvatar.jpg")
                              }
-                             style={{width:60, height:60,borderRadius:30}} 
+                             style={{width:80, height:80,borderRadius:5,marginLeft:10,margin:20}} 
                                 />
               <View style={{alignItems:"center",flex:1}}>
-                      <Text style={styles.name}>{item.name}</Text>
-                     <Text>{item.email}</Text>
+                      <Text style={styles.name}>{item.animalreference}</Text>
+                      <Text style={styles.name}>{item.animalhealth}</Text>
+                   
+                    
              </View>
 
                <TouchableOpacity  onPress={()=> this._twoOptionAlertHandler(item.key)} style={{height:50,width:50, justifyContent:"center",alignItems:"center"}}>
                    <Ionicons name="ios-trash" size={35} color="#73788B" style={{marginLeft:10}} />
+               </TouchableOpacity>
+               <TouchableOpacity  onPress={()=> this.props.navigation.navigate("edit")} style={{height:50,width:50, justifyContent:"center",alignItems:"center"}}>
+                   <AntDesign name="edit" size={35} color="#73788B" style={{marginLeft:10}} />
                </TouchableOpacity>
            </View>
              
@@ -263,7 +254,7 @@ input: {
     padding:10,
     backgroundColor:"#FFF",
     width:"90%",
-    flex:1,
+  
     alignSelf:"center",
     flexDirection:"row",
     borderRadius:5

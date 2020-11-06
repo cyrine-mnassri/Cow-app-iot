@@ -11,8 +11,11 @@ export default class ProfileAdminScreen extends React.Component {
 
     }
 
+    
+
     logoutUser = () => {
-        f.auth().signOut();
+        f.auth().signOut();       
+           this.props.navigation.navigate("Login");
         alert('Logged Out')
     };
 

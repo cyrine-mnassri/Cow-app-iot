@@ -7,11 +7,10 @@ import {View,
     TouchableOpacity,
     Image,
     StatusBar,
-    LayoutAnimation
+    LayoutAnimation,Button
 } from "react-native";
 // import * as firebase from 'firebase';
 import {f, auth, database, storage} from "../config/config.js"
-
 export default class LoginScreen extends React.Component {
     static navigationOptions = {
         headerShown: false
@@ -26,8 +25,7 @@ export default class LoginScreen extends React.Component {
             errorMessage: null
         };
     }
-
-
+    goToForgotPassword = () => this.props.navigation.navigate('forgot')
     loginn = async() => {
         var email = this.state.email;
         var password = this.state.password;
@@ -36,7 +34,7 @@ export default class LoginScreen extends React.Component {
             if(email === 'admin@gmail.com' && password ==='adminadmin'){
                 try {
                     let user = await auth.signInWithEmailAndPassword(email,password);
-               this.props.navigation.navigate("HomeAdmin");
+            this.props.navigation.navigate("Admin");
           
                   
                 }catch(error){
@@ -72,21 +70,7 @@ export default class LoginScreen extends React.Component {
 
             <View style={styles.container}>
                 <StatusBar barStyle="light-content"></StatusBar>
-                <Image
-                    source={require("../assets/authHeader.png")}
-                    style={{ marginTop: -245, marginLeft: -40 }}
-                ></Image>
-
-                <Image
-                    source={require("../assets/authFooter.png")}
-                    style={{ position: "absolute", bottom: -325, right: -225 }}
-                ></Image>
-
-                <Image
-                    source={require("../assets/loginLogo.png")}
-                    style={{ marginTop: -120, alignSelf: "center" }}
-                ></Image>
-
+           
 
                 <View style={styles.errorMessageee}>
                     {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
@@ -95,6 +79,8 @@ export default class LoginScreen extends React.Component {
 
                 <View style={styles.form}>
                     <View>
+                    <Text style={styles.headerTitle}>Welcome to I-Cattle</Text>
+
                         <Text style={styles.inputTitle}>Email Address</Text>
                         <TextInput style={styles.input}
                                    editable={true}
@@ -112,14 +98,32 @@ export default class LoginScreen extends React.Component {
                             onChangeText={(text) => this.setState({ password:text })} value={this.state.password}
                         ></TextInput>
                     </View>
-
+                    <TouchableOpacity onPress={()=> this.props.navigation.navigate("forgot")}>
+                    <Text style={{ color: "#414959", fontSize: 13, marginTop: 50,marginLeft: 200,fontWeight: "500", color: "#00ff00" }}>
+                    Forgot Password?
+                    </Text>
+                    </TouchableOpacity>
                 </View>
+                
+
+                
+            
+
+
+
                 <TouchableOpacity style={styles.button} onPress={()=> this.loginn()}>
-                    <Text style={{ color: "#FFF", fontWeight: "500" }}>Sign in</Text>
+                    <Text style={{ color: "#FFF", fontWeight: "500" }}>Login</Text>
                 </TouchableOpacity>
 
-               
-               
+                <TouchableOpacity
+                    style={{ alignSelf: "center",marginTop: 12 }}
+                    onPress={() => this.props.navigation.navigate("Register")}
+                >
+                    <Text style={{ color: "#414959", fontSize: 13}}>
+                        Don't have an account  ? <Text style={{ fontWeight: "500", color: "#00ff00" }}>Register now</Text>
+                    </Text>
+                </TouchableOpacity>
+
             </View>
 
 
@@ -146,6 +150,11 @@ const styles = StyleSheet.create({
         fontWeight: "400",
         textAlign: "center"
     },
+    headerTitle: {
+        fontSize: 20,
+        fontWeight: "500",
+        marginBottom:50
+    },
     errorMessageee: {
         height: 72,
         alignItems: "center",
@@ -159,7 +168,8 @@ const styles = StyleSheet.create({
     inputTitle: {
         color: "#8A8F9E",
         fontSize: 10,
-        textTransform: "uppercase"
+        textTransform: "uppercase",
+       
     },
     input: {
         borderBottomColor: "#8A8F9E",
@@ -170,7 +180,7 @@ const styles = StyleSheet.create({
     },
     button: {
         marginHorizontal: 30,
-        backgroundColor: "#E9446A",
+        backgroundColor: "#00ff00",
         borderRadius: 4,
         height: 52,
         alignItems: "center",
