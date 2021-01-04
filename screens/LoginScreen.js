@@ -7,10 +7,13 @@ import {View,
     TouchableOpacity,
     Image,
     StatusBar,
-    LayoutAnimation,Button
-} from "react-native";
+    LayoutAnimation,
+    Button,
+    ImageBackground} from "react-native";
 // import * as firebase from 'firebase';
 import {f, auth, database, storage} from "../config/config.js"
+import { AntDesign,MaterialIcons } from '@expo/vector-icons'; 
+
 export default class LoginScreen extends React.Component {
     static navigationOptions = {
         headerShown: false
@@ -56,14 +59,7 @@ export default class LoginScreen extends React.Component {
 
         }
     };
-    // handleLogin = () => {
-    //     const { email, password } = this.state;
-    //
-    //     firebase
-    //         .auth()
-    //         .signInWithEmailAndPassword(email, password)
-    //         .catch(error => this.setState({ errorMessage: error.message }));
-    // };
+  
     render() {
         LayoutAnimation.easeInEaseOut();
         return (
@@ -75,65 +71,83 @@ export default class LoginScreen extends React.Component {
                 <View style={styles.errorMessageee}>
                     {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
                 </View>
+                <View style={styles.container}>
+    <ImageBackground source={require('../assets/backgroundscreen.png')} style={styles.image}>
+    </ImageBackground>
+  </View>
 
-
+            <View>
                 <View style={styles.form}>
-                    <View>
+                    
                     <Text style={styles.headerTitle}>Welcome to I-Cattle</Text>
+               
 
-                        <Text style={styles.inputTitle}>Email Address</Text>
+                   <View style={{backgroundColor:"#FFFFFF",borderRadius:8}} > 
+                       <View  style={{flexDirection: 'row'}}> 
+
+                      <View style={{paddingTop:10,paddingRight:10,paddingLeft:10}}>
+                       <AntDesign
+                        name="mail"
+                        color="#DBD8D8"
+                        size={20}
+                       />
+                       </View>
+
+           
+                      
                         <TextInput style={styles.input}
-                                   editable={true}
+                                   placeholder={'Email'}
                                    keyboardType={'email-address'}
-                                   autoCapitalize="none" onChangeText={(text) => this.setState({ email:text})}
-                                   value={this.state.email}></TextInput>
+                                   autoCapitalize="none" 
+                                   onChangeText={(text) => this.setState({ email:text})}
+                                   value={this.state.email}>
+                        </TextInput>
+                       </View>
+
+                    </View>
+                    
+
+                    
+                    <View style={{backgroundColor:"#FFFFFF", flexDirection:'row',marginTop: 20,borderRadius:8 }}>
+                    <View style={{paddingTop:10,paddingRight:10,paddingLeft:10}}>
+                    <AntDesign
+                      name="lock"
+                      color="#DBD8D8"
+                      size={20}
+                    />
                     </View>
 
-                    <View style={{ marginTop: 32 }}>
-                        <Text style={styles.inputTitle}>Password</Text>
                         <TextInput
                             style={styles.input}
+                            placeholder={'Password'}
                             secureTextEntry={true}
                             autoCapitalize="none"
                             onChangeText={(text) => this.setState({ password:text })} value={this.state.password}
                         ></TextInput>
                     </View>
+                    
                     <TouchableOpacity onPress={()=> this.props.navigation.navigate("forgot")}>
-                    <Text style={{ color: "#414959", fontSize: 13, marginTop: 50,marginLeft: 200,fontWeight: "500", color: "#00ff00" }}>
+                    <Text style={{ fontSize: 12, marginTop: 15,marginLeft: 160,fontWeight: "500", color: "#00ff00" }}>
                     Forgot Password?
                     </Text>
                     </TouchableOpacity>
                 </View>
                 
 
-                
-            
-
-
-
                 <TouchableOpacity style={styles.button} onPress={()=> this.loginn()}>
-                    <Text style={{ color: "#FFF", fontWeight: "500" }}>Login</Text>
+                    <Text style={{ color: "#FFF", fontWeight: "bold",fontSize:15 }}>Login</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={{ alignSelf: "center",marginTop: 12 }}
-                    onPress={() => this.props.navigation.navigate("Register")}
-                >
+                    style={{ alignSelf: "center",marginTop: 15,paddingBottom:10 }}
+                    onPress={() => this.props.navigation.navigate("RegisterOption")}>
                     <Text style={{ color: "#414959", fontSize: 13}}>
                         Don't have an account  ? <Text style={{ fontWeight: "500", color: "#00ff00" }}>Register now</Text>
                     </Text>
                 </TouchableOpacity>
 
             </View>
-
-
-
-
-
-
-
-
-
+            </View>
         );
     }
 }
@@ -141,8 +155,8 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1
-
-
+        ,backgroundColor:"#F70B0B",
+        backgroundColor:"#FFFFFF"
     },
     greeting: {
         marginTop: -32,
@@ -151,9 +165,10 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     headerTitle: {
-        fontSize: 20,
-        fontWeight: "500",
-        marginBottom:50
+        marginTop: 32,
+        fontSize: 18,
+        fontWeight: "400",
+        textAlign: "center",marginBottom:20
     },
     errorMessageee: {
         height: 72,
@@ -162,8 +177,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 30
     },
     form: {
-        marginBottom: 48,
-        marginHorizontal: 30
+        marginBottom: 5,
+        marginHorizontal: 15
     },
     inputTitle: {
         color: "#8A8F9E",
@@ -172,19 +187,26 @@ const styles = StyleSheet.create({
        
     },
     input: {
-        borderBottomColor: "#8A8F9E",
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        height: 40,
-        fontSize: 15,
-        color: "#161F3D"
+     
+
+        height: 20,
+        width: 270,
+        paddingHorizontal: 5,
+        marginBottom: 5,
+        marginRight:50,
+        marginBottom:15,
+        marginTop:7,
+        borderRadius:5
+
+
     },
     button: {
         marginHorizontal: 30,
         backgroundColor: "#00ff00",
         borderRadius: 4,
-        height: 52,
+        height:40,
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",borderRadius:8
     },
     error: {
         color: "#E9446A",
@@ -192,28 +214,27 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         textAlign: "center"
     }
+    ,
+    topBar:{
+    width: null,
+    height: "30%",
+   /* backgroundColor:'#FFFFFF'*/
+ 
+    }
+    ,
+    imglogin:
+    {
+      width:null,
+        height:"100%"
+    },
+    image:{
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    
+    width:null,
+    height:700
+    }
 
 
 });
-
-
-// import React from "react";
-// import { View, Text, StyleSheet } from "react-native";
-//
-// export default class LoginScreen extends React.Component {
-//     render() {
-//         return (
-//             <View style={styles.container}>
-//                 <Text>register Screen</Text>
-//             </View>
-//         );
-//     }
-// }
-//
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         alignItems: "center",
-//         justifyContent: "center"
-//     }
-// });

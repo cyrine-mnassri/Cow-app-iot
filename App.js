@@ -1,10 +1,10 @@
 // App.js
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, Button,View} from 'react-native';
 import {createAppContainer, createSwitchNavigator} from "react-navigation";
 import {createStackNavigator} from "react-navigation-stack";
 import {createBottomTabNavigator} from "react-navigation-tabs";
-import {Ionicons,Entypo,MaterialIcons ,AntDesign} from "@expo/vector-icons";
+import {Ionicons,Entypo,MaterialIcons ,AntDesign,Fontisto,MaterialCommunityIcons} from "@expo/vector-icons";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import loadingscreens from "./screens/loadingscreens";
 import OnboardingScreen from "./screens/OnboardingScreen";
@@ -28,9 +28,23 @@ import VetsScreen from "./screens/VetsScreen";
 import AddAnimalScreen from "./screens/AddAnimalScreen";
 import TrakingScreen from "./screens/TrakingScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import ScanScreen from "./screens/ScanScreen";
+import DetailsScreen from "./screens/DetailsScreen";
 
 import {decode, encode} from 'base-64'
 import { FontAwesome5 } from '@expo/vector-icons'; 
+import ScanScreen1 from './screens/ScanScreen1';
+import AddCattleToShopScreen from './screens/AddCattleToShopScreen';
+import CommentsScreen from './screens/CommentsScreen';
+import UserProfil from './screens/UserProfil';
+import shops from './screens/shops';
+import UpdateScreen from './screens/UpdateScreen';
+import DoctorDetailsScreen from './screens/DoctorDetailsScreen';
+import ChatScreen from './screens/ChatScreen';
+import MyCowsAddedToShop from './screens/MyCowsAddedToShop';
+import RegisterOptionScreen from './screens/RegisterOptionScreen';
+import MychatsScreen from './screens/MychatsScreen';
+
 if (!global.btoa) {
     global.btoa = encode
 }
@@ -46,46 +60,38 @@ const AppContainer = createStackNavigator(
             {
                 Animal: {
                     screen: AnimalScreen,
+
                     navigationOptions: {
-                        tabBarIcon: ({tintColor}) => <Ionicons name="ios-home" size={24} color={tintColor}/>
+                        tabBarLabel:'cows',  
+
+                        tabBarIcon: ({tintColor}) => <MaterialCommunityIcons name="cow" size={20} color={tintColor}/>
                     }
                 },
                 Vets: {
                     screen: VetsScreen,
                     navigationOptions: {
-                        tabBarIcon: ({tintColor}) => <FontAwesome5 name="clinic-medical" size={24} color={tintColor}/>
+                        tabBarIcon: ({tintColor}) => <Fontisto name="doctor" size={20} color={tintColor}/>
                     }
                 },
                 
-                AddAnimal: {
-                    screen: AddAnimalScreen,
+                shops: {
+                    screen: shops,
                     navigationOptions: {
-                        tabBarIcon: ({tintColor}) => (
-                            <Ionicons
-                                name="ios-add-circle"
-                                size={48}
-                                color="#00ff00"
-                                style={{
-                                    shadowColor: "#E9446A",
-                                    shadowOffset: { width: 0, height: 10 },
-                                    shadowRadius: 10,
-                                    shadowOpacity: 0.3
-                                }}
-                            />
-                            
-                        )
+                        tabBarLabel:'Market',  
+
+                        tabBarIcon: ({tintColor}) => <AntDesign name="shoppingcart"  size={20} color={tintColor}/>
                     }
                 },
                 Traking: {
                     screen: TrakingScreen,
                     navigationOptions: {
-                        tabBarIcon: ({tintColor}) => <Entypo name="location"  size={24} color={tintColor}/>
+                        tabBarIcon: ({tintColor}) => <Entypo name="location"  size={20} color={tintColor}/>
                     }
                 },
                 Profile: {
                     screen: ProfileScreen,
                     navigationOptions: {
-                        tabBarIcon: ({tintColor}) => <Ionicons name="ios-person" size={24} color={tintColor}/>
+                        tabBarIcon: ({tintColor}) => <Ionicons name="ios-person" size={20} color={tintColor}/>
                     }
                 }
             },
@@ -102,14 +108,18 @@ const AppContainer = createStackNavigator(
                 tabBarOptions: {
                     activeTintColor: "#161F3D",
                     inactiveTintColor: "#B8BBC4",
-                    showLabel: false
+                    showLabel: true
                 }
             }
         ),
         postModal: {
-            screen: AddAnimalScreen
+            screen: AnimalScreen
         }
     },
+
+
+
+    
     {
         mode: "modal",
         headerMode: "none",
@@ -121,7 +131,9 @@ const AuthStack = createStackNavigator({
     Register: RegisterScreen,    
     Login: LoginScreen,
     forgot:Forgot,
-	onboardingScreen:OnboardingScreen
+    onboardingScreen:OnboardingScreen,
+    RegisterOption:RegisterOptionScreen
+    
 
     },
     {
@@ -130,21 +142,84 @@ const AuthStack = createStackNavigator({
 );
 
 
-const Edit =  createStackNavigator({
-    edit:EditScreen,
- 
+const ed =  createStackNavigator({
+    UpdateCattle:EditScreen,
+
  
  });
- 
+ const mychats =  createStackNavigator({
+    Mychats:MychatsScreen,
 
+ 
+ });
+
+ const addToshop =  createStackNavigator({
+    addshop:AddCattleToShopScreen,
+   
+ 
+ });
+
+
+ const MyCowsAdded =  createStackNavigator({
+    MyCowsShop:MyCowsAddedToShop,
+   
+ 
+ });
+
+
+
+
+
+ const up =  createStackNavigator({
+    UpdatePost :UpdateScreen
+  
+  
+  });
+ 
 const report =  createStackNavigator({
    healthReport :HealthReport
  
  
  });
 
- 
+ const ok = createStackNavigator({
+    Comments: CommentsScreen,
 
+
+    });
+    const Dcdetails = createStackNavigator({
+        DoctorDetails: DoctorDetailsScreen,
+    
+    
+        });
+  
+ 
+ const Scan =  createStackNavigator({
+    scan : ScanScreen,
+    AddAnimalScreen:AddAnimalScreen
+
+    
+   
+  });
+  const Scan1 =  createStackNavigator({
+    scan1 : ScanScreen1
+    
+    
+   
+  });
+
+  const dt =  createStackNavigator({
+    Details : DetailsScreen
+    
+    
+   
+  });
+  const ch =  createStackNavigator({
+    Chat : ChatScreen
+    
+    
+   
+  });
 
 const Admin = createStackNavigator(
     {
@@ -208,14 +283,11 @@ const Admin = createStackNavigator(
     }
 );
 
-
-
-
-
-
-
-
-
+const UsProfil =  createStackNavigator({
+    userprofil:UserProfil
+ 
+ 
+ });
 
 
 
@@ -229,7 +301,16 @@ export default createAppContainer(
             Auth: AuthStack,
             Admin: Admin,
             rep:report,
-            edt:Edit
+            scan:Scan,
+            scan1:Scan1,
+        //    sp:sp,
+            Usp:UsProfil,
+            ok:ok,
+            addToshop:addToshop,
+          //  AddAnimal:AddAnimal
+            ed:ed,dt:dt,
+up:up,Dcdetails:Dcdetails,ch:ch,
+MyCowsAdded:MyCowsAdded,mychats:mychats
             
         },
         {

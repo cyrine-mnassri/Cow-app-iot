@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
-import firebase from "firebase";
 import {f, auth, database, storage} from "../config/config.js"
 export default class loadingscreens extends React.Component {
 

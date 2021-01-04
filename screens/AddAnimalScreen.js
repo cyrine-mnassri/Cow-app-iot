@@ -1,9 +1,13 @@
 import React from "react";
-import {TextInput, ActivityIndicator, View, Text, StyleSheet, TouchableOpacity, Image} from "react-native";
-import {Ionicons} from "@expo/vector-icons";
+import {TextInput, ActivityIndicator, View, Text, StyleSheet, TouchableOpacity, Image,ScrollView,Button,TouchableHighlight} from "react-native";
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from "expo-image-picker";
 import {f, auth, database, storage} from "../config/config.js";
+import DateTimePickerModal from 'react-native-modal-datetime-picker'; 
+import { Picker } from 'react-native'
+import RBSheet from "react-native-raw-bottom-sheet";
+
+import {Ionicons,Entypo,MaterialIcons ,AntDesign,FontAwesome} from "@expo/vector-icons";
 
 export default class AddAnimalScreen extends React.Component {
 
@@ -20,11 +24,45 @@ export default class AddAnimalScreen extends React.Component {
            animalbirth:'',
            animalbreed:'',
            animalhealth:'',
-            progress: 0
+            progress: 0,
+            visibility: false,
+            DateDisplay:""
+              
 
         }
 
     }
+    static navigationOptions = ({ navigation }) => {
+        return {
+            headerShown:false,
+         
+        };
+      };
+
+    _logout = () => {
+        this.props.navigation.navigate('Animal');
+      }
+    
+
+
+    componentDidMount = ()=> {
+        this.props.navigation.setParams({ logout: this._logout });}
+
+    handleConfirm=(date)=>{
+        this.setState({DateDisplay:date.toUTCString()});
+      
+      }
+      onPressCancel=()=>{
+        this.setState({visibility:false});
+      
+      }
+      onPressButton=()=>{
+        this.setState({visibility:true});
+      
+      }
+      
+ 
+
 
     _checkPermissions = async() => {
         const {status} = await Permissions.askAsync(Permissions.CAMERA);
@@ -49,7 +87,38 @@ export default class AddAnimalScreen extends React.Component {
             this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-'
     };
 
-    findNewImage = async()=> {
+    findNewImageCamera = async()=> {
+
+        this._checkPermissions();
+
+        let result = await ImagePicker.launchCameraAsync({
+            mediaTypes: 'Images',
+            allowsEditing: true,
+            quality: 1
+        });
+        console.log(result);
+
+        if (!result.cancelled) {
+            console.log('upload image');
+            // this.uploadImage(result.uri);
+            this.setState({
+                imageSelected: true,
+                imageId: this.uniqueId(),
+                uri: result.uri,
+             
+
+            })
+
+        } else {
+            console.log('cancel');
+            this.setState({
+                imageSelected: false
+            })
+
+        }
+
+    };
+    findNewImageGallery = async()=> {
 
         this._checkPermissions();
 
@@ -66,7 +135,10 @@ export default class AddAnimalScreen extends React.Component {
             this.setState({
                 imageSelected: true,
                 imageId: this.uniqueId(),
-                uri: result.uri
+                uri: result.uri,
+                uri1: result.uri1,
+                uri2: result.uri2,
+
             })
 
         } else {
@@ -78,14 +150,13 @@ export default class AddAnimalScreen extends React.Component {
         }
 
     };
-
     uploadPublish = () => {
         if (this.state.uploading == false) {
-            if (this.state.caption != '') {
+            if (this.state.animalweight != '' && this.state.animalreference != '' ) {
                 this.uploadImage(this.state.uri);
 
             } else {
-                alert('brabi da5el text');
+                alert('enter all informations');
             }
         } else {
             console.log('ignore button')
@@ -130,11 +201,7 @@ export default class AddAnimalScreen extends React.Component {
         });
 
 
-        // var snapshot = ref.put(blob).on('state_changed', snapshot => {
-        // console.log('Progress', snapshot.bytesTransferred, snapshot.totalBytes);
-//     }
-// )
-//     ;
+     
 
 
     };
@@ -142,9 +209,10 @@ export default class AddAnimalScreen extends React.Component {
     procesUpload = (imageUrl) => {
         var imageId = this.state.imageId;
         var userId = f.auth().currentUser.uid;
-
+        const { navigation } = this.props;  
+        const user_name = navigation.getParam('value','');  
         var animaltype = this.state.animaltype;
-        var animalreference = this.state.animalreference;
+        var animalreference = user_name;
         var animalweight = this.state.animalweight;  
         var animalbirth = this.state.animalbirth; 
         var animalbreed = this.state.animalbreed;
@@ -171,9 +239,10 @@ export default class AddAnimalScreen extends React.Component {
 
         } ;
 
-        database.ref('/photos/' + imageId).set(photoObj);
+      //  database.ref('/photos/' + imageId).set(photoObj);
         database.ref('/users/'+userId+'/photos/' + imageId).set(photoObj);
         alert('Animal saved ');
+        this.props.navigation.navigate("Animal")
 
         this.setState({
             uploading: false,
@@ -192,119 +261,38 @@ export default class AddAnimalScreen extends React.Component {
 
 
     };
-
+    alertt = () => {
+        const { navigation } = this.props;  
+        const user_name = navigation.getParam('value','');  
+        alert({user_name});
+    };
 
     render() {
+        const { navigation } = this.props;  
+        const user_name = navigation.getParam('value','');  
+
+       // const { params } = this.props.navigation.state;
+       // const itemId = params ? params.value : null;
+
         return (
-            <View style={{flex:1}}>
-                {this.state.imageSelected == true ? (
+            <View style={styles.container}>
+                              <View style={styles.header}>
+                    <Text style={styles.headerTitle}>Add Cattle </Text>
+                    <TouchableOpacity  style={styles.headerTitle} onPress={()=>this.props.navigation.navigate('Animal')}>
+                    <AntDesign name="close" size={25} color="#73788B"  />
+
+                    </TouchableOpacity>
+                    </View>
                     <View style={{flex:1}}>
 
-                   
-                            <Text style={{fontSize:20, fontWeight:'bold',height:20}}>Upload</Text>
-
-                        <View style={{padding:5}}>
-                            <Text style={{marginTop : 2}}>Animal type</Text>
-                            <TextInput
-                                editable={true}
-                                autoFocus={true}
-                                multiline={true}
-                                numberOfLines={4}
-                                style={{ marginVertical:10, height:30, padding: 5, borderColor: 'grey', borderWidth:1,borderRadius:3,backgroundColor:'white', color:'black'}}
-                            
-                                onChangeText={text => this.setState({ animaltype:text })}
-                                value={this.state.text}
-                            />
+         
 
 
+                        <View  style={{backgroundColor:"#F3F3F3"}}>
 
-
-
-                            <Text style={{marginTop : 2}}>Animal reference</Text>
-                            <TextInput
-                                editable={true}
-                                autoFocus={true}
-                                multiline={true}
-                                numberOfLines={4}
-                                style={{ marginVertical:10, height:30, padding: 5, borderColor: 'grey', borderWidth:1,borderRadius:3,backgroundColor:'white', color:'black'}}
-                                onChangeText={text => this.setState({ animalreference:text })}
-                                value={this.state.text}
-                            />
-
-                            
-                           <Text style={{marginTop : 2}}>Animal weight (Kg)</Text>
-                            <TextInput
-                                editable={true}
-                                autoFocus={true}
-                                multiline={true}
-                                numberOfLines={4}
-                                style={{ marginVertical:10, height:30, padding: 5, borderColor: 'grey', borderWidth:1,borderRadius:3,backgroundColor:'white', color:'black'}}
-                             
-                                onChangeText={text => this.setState({ animalweight:text })}
-                                value={this.state.text}
-                            />
-
-
-
-
-
-                        <Text style={{marginTop : 2}}>Birth</Text>
-                            <TextInput
-                                editable={true}
-                                autoFocus={true}
-                                multiline={true}
-                                numberOfLines={4}
-                                style={{ marginVertical:10, height:30, padding: 5, borderColor: 'grey', borderWidth:1,borderRadius:3,backgroundColor:'white', color:'black'}}
-                            
-                                onChangeText={text => this.setState({ animalbirth:text })}
-                                value={this.state.text}
-                            />
-                        <Text style={{marginTop : 2}}>Breed</Text>
-                            <TextInput
-                                editable={true}
-                                autoFocus={true}
-                                multiline={true}
-                                numberOfLines={4}
-                                style={{ marginVertical:10, height:30, padding: 5, borderColor: 'grey', borderWidth:1,borderRadius:3,backgroundColor:'white', color:'black'}}
-                                
-                                onChangeText={text => this.setState({ animalbreed:text })}
-                                value={this.state.text}
-                            />
-
-
-
-
-
-
-
-
-                              <Text style={{marginTop : 2}}>Current Health-state</Text>
-                            <TextInput
-                                editable={true}
-                                autoFocus={true}
-                                multiline={true}
-                                numberOfLines={4}
-                                style={{ marginVertical:10, height:30, padding: 5, borderColor: 'grey', borderWidth:1,borderRadius:3,backgroundColor:'white', color:'black'}}
-                              
-                                onChangeText={text => this.setState({ animalhealth:text })}
-                                value={this.state.text}
-                            />
-
-
-
-
-
-
-
-
-
-
-                            <TouchableOpacity onPress={()=> this.uploadPublish()}
-                                              style={{alignSelf:'center', width:170,marginHorizontal:'auto', backgroundColor:"#00ff00", borderRadius:5, paddingVertical:10, paddingHorizontal:20}}>
-                                <Text style={{textAlign:'center', color:'white'}}>Save Animal</Text>
-                            </TouchableOpacity>
-
-                            { this.state.uploading == true ? (
+                        <ScrollView>
+                            <View style={{margin:10,borderColor:"#008000",borderWidth:1,padding:10,borderRadius:3}}>
+                        { this.state.uploading == true ? (
                                 <View style={{marginTop:10}}>
                                     <Text>{this.state.progress} %</Text>
                                     {this.state.progress != 100 ? (
@@ -318,25 +306,209 @@ export default class AddAnimalScreen extends React.Component {
                                 <View></View>
                             )}
 
-                            <Image source={{uri : this.state.uri}}
-                                   style={{marginTop:10,resizeMode:'cover', width:'100%',height:275}}/>
 
+
+               
+                            <Text style={styles.textDesign} >Animal reference</Text>
+                          <View style={{flexDirection: 'row',justifyContent:"space-between",width:"100%"  }}>
+                          
+                        <TextInput
+                                editable={true}
+                                autoFocus={true}
+                                multiline={true}
+                                numberOfLines={4}
+                                style={{width:230,marginVertical:10, height:30, padding: 5,borderRadius:3,backgroundColor:'white', color:'black',borderColor:"#008000",borderWidth:1}}
+
+                                onChangeText={text => this.setState({ animalreference:text })}
+                              //  value={this.state.text}
+                                value={user_name}
+                            />
+
+                        
+        
+                        <TouchableOpacity  style={{marginTop:8}}  onPress={() => this.props.navigation.navigate('scan')}>
+                            <AntDesign name="qrcode" size={34} color="#008000" ></AntDesign>
+                        </TouchableOpacity>
+                   
+                   </View>
+
+                   
+                   <Text  style={styles.textDesign} >Animal type</Text>
+               <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
+   <AntDesign style={{marginTop:20}} name="caretdown" size={12} color="#008000" ></AntDesign>
+   < Picker style={{width:'100%',backgroundColor:"#FFFFFF"}}
+                 selectedValue={this.state.animaltype}
+                 onValueChange={(itemValue, itemIndex) =>
+                   this.setState({ animaltype: itemValue })
+                 }>
+                 <Picker.Item label="Tarentaise" value="Tarentaise" />
+                 <Picker.Item label="Brune de l'Atlas" value="Brune de l'Atlas" />
+                 <Picker.Item label="Frisonne" value="Frisonne" />
+                 <Picker.Item label="Brune" value="Brune" />
+   
+               </Picker>
+               </View>                 
+                            
+                           <Text style={styles.textDesign}  >Animal weight (Kg)</Text>
+                            <TextInput
+                                editable={true}
+                                autoFocus={true}
+                                multiline={true}
+                                keyboardType = 'numeric'
+
+                                numberOfLines={4}
+                                style={{borderColor:"#008000",borderWidth:1, marginVertical:10, height:30, padding: 5,borderRadius:3,backgroundColor:'white', color:'black'}}
+                             
+                                onChangeText={text => this.setState({ animalweight:text })}
+                                value={this.state.text}
+                            />
+
+
+
+<Text style={styles.textDesign} >Name</Text>
+
+<TextInput
+                                editable={true}
+                                autoFocus={true}
+                                multiline={true}
+                                numberOfLines={4}
+                                style={{ marginVertical:10, height:30, padding: 5,borderRadius:3,backgroundColor:'white', color:'black',borderColor:"#008000",borderWidth:1}}
+                                
+                                onChangeText={text => this.setState({ animalbreed:text })}
+                                value={this.state.text}
+                            />
+                          
+                        <Text style={styles.textDesign} >Birth</Text>
+
+
+                        <View style={{ flexDirection: 'row',justifyContent:"space-between"}}>
+                    
+                            <TextInput
+                                editable={true}
+                                autoFocus={true}
+                                multiline={true}
+                                numberOfLines={4}
+                                style={{width:230,marginVertical:10, height:30, padding: 5,borderRadius:3,backgroundColor:'white', color:'black',borderColor:"#008000",borderWidth:1}}
+
+                                onChangeText={text => this.setState({ animalbirth:text })}
+                             value={this.state.DateDisplay}
+                            />
+
+<DateTimePickerModal
+isVisible={this.state.visibility}
+onConfirm={this.handleConfirm}
+onCancel={this.onPressCancel}
+mode="date"
+
+/>
+
+
+<TouchableOpacity style={{marginTop:8}} onPress={this.onPressButton}>
+                            <AntDesign name="calendar" size={34} color="#008000"></AntDesign>
+                        </TouchableOpacity>
+
+
+
+ 
+</View>
+
+
+
+
+<Text style={styles.textDesign} >Current Health-state</Text>
+
+<View style={{flexDirection:"row",justifyContent:"flex-start"}}>
+   <AntDesign style={{marginTop:20}} name="caretdown" size={12} color="#008000" ></AntDesign>
+            < Picker style={{width:'100%',backgroundColor:"#FFFFFF"}}
+              selectedValue={this.state.animalhealth}
+              onValueChange={(itemValue, itemIndex) =>
+                this.setState({ animalhealth: itemValue })
+              }>
+              <Picker.Item label="healthy" value="healthy" />
+              <Picker.Item label="sick" value="sick" />
+            
+
+            </Picker>
+</View>
+            <View style={{flexDirection:"row"}}>
+
+
+
+                       <TouchableOpacity  onPress={() => this.RBSheet.open()}  style={{ marginTop:10,resizeMode:'cover',backgroundColor:"#008000" ,width:50,height:50,borderRadius:10,alignContent:"center",justifyContent:"center",alignItems:"center" ,marginRight:10}}  >
+                            <Ionicons name="md-camera" size={40} color="#FFFFFF"></Ionicons>
+                        </TouchableOpacity>
+
+
+                        <RBSheet
+          ref={ref => {
+            this.RBSheet = ref;
+          }}
+          height={300}
+          openDuration={250}
+          customStyles={{
+            container: 
+            {
+
+              justifyContent: "center",
+              alignItems: "center",
+              borderTopLeftRadius:15,borderTopRightRadius:15
+
+            }
+          }}
+        >
+
+<View style={styles.panel}>
+      <View style={{alignItems: 'center'}}>
+        <Text style={styles.panelTitle}>Choose Option</Text>
+        <Text style={styles.panelSubtitle}></Text>
+
+      </View>
+      <TouchableOpacity onPress={()=> this.findNewImageCamera()}   style={styles.panelButton}>
+        <Text style={styles.panelButtonTitle}>Open Camera</Text>
+      </TouchableOpacity>
+      <TouchableOpacity  onPress={()=> this.findNewImageGallery()}  style={styles.panelButton1} >
+        <Text style={styles.panelButtonTitle}>Select From Gallery</Text>
+      </TouchableOpacity>
+   
+    </View>
+   
+        </RBSheet>
+
+
+
+
+
+
+
+                        <Image source={{uri : this.state.uri}}
+                                   style={{marginTop:10,resizeMode:'cover', width:50,height:50,borderRadius:10}}/>
+                        </View>
+
+
+
+                     
+
+
+                        <TouchableOpacity onPress={()=> this.uploadPublish()}
+                                              style={{alignSelf:'center',marginHorizontal:'auto', backgroundColor:"#008000", borderRadius:5, paddingVertical:10, paddingHorizontal:20,marginTop:10,width:'100%'}}>
+                              
+
+                                <Text style={{textAlign:'center', color:'white'}}>Save Animal</Text>
+                            </TouchableOpacity>
+      
+</View>       
+</ScrollView>
 
                         </View>
 
                     </View>
 
-                ) : (
+            
 
 
-                    <View style={styles.container}>
-                        <Text>Upload Your Animal Image</Text>
-                        <Text></Text>
-                        <TouchableOpacity onPress={()=> this.findNewImage()}>
-                            <Ionicons name="md-camera" size={60} color="#D8D9DB"></Ionicons>
-                        </TouchableOpacity>
-                    </View>
-                )}
+                   
+                  
+               
             </View>
         );
     }
@@ -345,11 +517,10 @@ export default class AddAnimalScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center"
+        backgroundColor: "#EBECF4"
     },
     header: {
-        paddingTop: 64,
+        paddingTop:40,
         paddingBottom: 16,
         backgroundColor: "#FFF",
         alignItems: "center",
@@ -360,6 +531,75 @@ const styles = StyleSheet.create({
         shadowOffset: {height: 5},
         shadowRadius: 15,
         shadowOpacity: 0.2,
-        zIndex: 10
-    }
+        zIndex: 10,
+        flexDirection:"row",
+        justifyContent:"space-between",
+        
+    },
+    headerTitle: {
+        marginRight:20,
+        marginLeft:20,
+        fontSize: 15,
+        fontWeight: "700"
+    },
+    textDesign:{
+        fontWeight:"600",fontSize:13,marginBottom:10
+    },
+    panelHeader: {
+        alignItems: 'center',
+      },
+      panelHandle: {
+        width: 40,
+        height: 8,
+        borderRadius: 4,
+        backgroundColor: '#00000040',
+        marginBottom: 10,
+      },
+      panelTitle: {
+        fontSize: 27,
+        height: 35,
+      },
+      panelSubtitle: {
+        fontSize: 14,
+        color: 'gray',
+        height: 30,
+        marginBottom: 10,
+      },
+      panelButton: {
+        padding: 13,
+        borderRadius: 10,
+        backgroundColor: '#008000',
+        alignItems: 'center',
+        marginVertical: 7,
+      },
+      panelButton1: {
+        padding: 13,
+        borderRadius: 10,
+        backgroundColor: '#008000',
+        alignItems: 'center',
+        marginVertical: 7,
+      },
+      panelButtonTitle: {
+        fontSize: 17,
+        fontWeight: 'bold',
+        color: 'white',
+      },
+      commandButton: {
+        padding: 15,
+        borderRadius: 10,
+        backgroundColor: '#FF6347',
+        alignItems: 'center',
+        marginTop: 10,
+      },
+      panel: {
+        padding: 20,
+        backgroundColor: '#FFFFFF',
+        paddingTop: 20,
+        // borderTopLeftRadius: 20,
+        // borderTopRightRadius: 20,
+        // shadowColor: '#000000',
+        // shadowOffset: {width: 0, height: 0},
+        // shadowRadius: 5,
+        // shadowOpacity: 0.4,
+      },
 });

@@ -1,6 +1,4 @@
 
-
-
 import React from "react";
 import {Ionicons} from "@expo/vector-icons";
 import {TextInput, View, Text, StyleSheet, Button, Image, FlatList, TouchableOpacity} from "react-native";
@@ -84,6 +82,7 @@ export default class ProfileScreen extends React.Component {
 
     logoutUser = () => {
         f.auth().signOut();  
+this.props.navigation.navigate("Login")
 
         alert('Logged Out')
     };
@@ -156,6 +155,8 @@ export default class ProfileScreen extends React.Component {
                                     style={{marginTop:10,marginHorizontal:40, paddingVertical:15,borderRadius:20,borderColor: 'grey', borderWidth:1.5}}>
                                     <Text style={{textAlign:'center', color:'grey'}}>Edit Profil</Text>
                                 </TouchableOpacity>
+
+                              
 
                             </View>
 

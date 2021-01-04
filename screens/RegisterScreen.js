@@ -5,6 +5,7 @@ import UserPermissions from "../utilies/UserPermissions";
 import * as ImagePicker from "expo-image-picker";
 import Fire from "../Fire";
 import {f, auth, database, storage} from "../config/config.js"
+import { ScrollView } from "react-native-gesture-handler";
 
 
 export default class RegisterScreen extends React.Component {
@@ -17,39 +18,89 @@ export default class RegisterScreen extends React.Component {
         this.state = {
             name: "",
             username:"",
+            tel : "",
             email: "",
             password: "",
             moveScreen: false,
             errorMessage: null,
-            avatar: null
+            avatar: "",
+            specialite:"",
+            adresse:"",
+            type:"doctor"
+     
         };
     }
 
  
-
-    creeateUserObj = (userObj, email,username,name)=> {
+    creeateUserObj = (userObj, email,username,name,tel,avatar)=> {
         var uObj = {
             name: name,
             username: username,
-            avatar: 'http://www.gravatar.com/avatar',
-            email: email
+            tel:tel,
+          //  avatar: 'http://www.gravatar.com/this.state.avatar',
+          avatar:avatar ,
+          email: email,
         };
         database.ref('users').child(userObj.uid).set(uObj);
 
+
     };
+
+    creeateUserDoctorObj = (userObj, email,username,name,tel,avatar,specialite,adresse,type)=> {
+        var uObj = {
+          name: name,
+          username: username,
+          tel:tel,
+          avatar:avatar ,
+          email: email,
+          specialite:specialite,
+          adresse:adresse,
+          type:type
+        };
+        database.ref('users').child(userObj.uid).set(uObj);
+
+
+    };
+
 
 
     handleSignUp = async() => {
         var email = this.state.email;
         var username = this.state.username;
         var name = this.state.name;
+        var tel = this.state.tel;
         var password = this.state.password;
-        if (email != '' && password != '') {
+        var avatar = this.state.avatar;
+        var  specialite=this.state.specialite;
+        var  adresse=this.state.adresse;
+        var  type=this.state.type;
+
+        const { navigation } = this.props;  
+
+        const user_name = navigation.getParam("value");
+
+        if (email != '' && password != '' && user_name =="doctor" ) {
+
 
 
             try {
                 let user = await auth.createUserWithEmailAndPassword(email, password)
-                    .then((userObj) => this.creeateUserObj(userObj.user, email,username,name))
+                    .then((userObj) => this.creeateUserDoctorObj(userObj.user, email,username,name,tel,avatar,specialite,adresse,type))
+                    .catch((error) => alert(error));
+
+            } catch (error) {
+                console.log(error);
+                alert(error);
+            }
+        } 
+
+       else if (email != '' && password != '' && user_name =="farmer" ) {
+
+
+
+            try {
+                let user = await auth.createUserWithEmailAndPassword(email, password)
+                    .then((userObj) => this.creeateUserObj(userObj.user, email,username,name,tel,avatar,specialite,adresse,type))
                     .catch((error) => alert(error));
 
             } catch (error) {
@@ -60,7 +111,10 @@ export default class RegisterScreen extends React.Component {
             alert('email or password is empty');
 
         }
-        // Fire.shared.createUser(this.state.user);
+
+
+
+
     };
 
     handlePickAvatar = async() => {
@@ -72,26 +126,169 @@ export default class RegisterScreen extends React.Component {
             aspect: [4, 3]
         });
 
+       
+
         if (!result.cancelled) {
             this.setState({...this.state.avatar, avatar: result.uri});
         }
+
+
+
+
+
+
+
     };
 
+    uniqueId = () => {
+        return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
+            this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-'
+    };
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
     render() {
+            
+        const { navigation } = this.props;  
+
+        const user_name = navigation.getParam("value");
         return (
+            
             <View style={styles.container}>
-                <StatusBar barStyle="light-content"></StatusBar>
 
-                
 
-                <View style={{ position: "absolute", top: 24, alignItems: "center", width: "100%" }}>
 
-                   
+
+                <View style={{ position: "absolute", top: 5, alignItems: "center", width: "100%" }}>
+
+                    <TouchableOpacity style={styles.avatarPlaceholder} onPress={this.handlePickAvatar}>
+                        <Image source={{ uri: this.state.avatar }} style={styles.avatar}/>
+                        <Ionicons
+                            name="ios-add"
+                            size={30}
+                            color="#FFF"
+                            style={{ marginTop: 2, marginLeft: 2 }}
+                        ></Ionicons>
+                    </TouchableOpacity>
                 </View>
-                <Text style={styles.greeting}>{`Let's join our community`}</Text>
+
                 <View style={styles.errorMessage}>
                     {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
                 </View>
+
+
+
+
+
+
+
+
+                <ScrollView>
+
+                { 
+            user_name=="doctor"?
+
+
+                <View style={styles.form}>
+                    
+                 
+
+                    <View>
+                        <Text style={{  color: "#8A8F9E",  fontSize: 10, textTransform: "uppercase",marginTop:90}}>Full Name</Text>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={(text) => this.setState({ name:text })} value={this.state.name}
+                            value={this.state.name}
+                        ></TextInput>
+                    </View>
+                        <View>
+                            <Text style={styles.inputTitle}>Username</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={(text) => this.setState({ username:text })} value={this.state.username}
+                                value={this.state.username}
+                            ></TextInput>
+                        </View>
+                           <View>
+                            <Text style={styles.inputTitle}>Phone number</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={(text) => this.setState({ tel:text })} value={this.state.tel}
+                                value={this.state.tel}
+                                 keyboardType={'numeric'}
+                            ></TextInput>
+                        </View>
+
+
+                        <View>
+                            <Text style={styles.inputTitle}>adresse</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={(text) => this.setState({ adresse:text })} value={this.state.adresse}
+                                value={this.state.adresse}
+                            ></TextInput>
+                        </View>
+
+                        <View>
+                            <Text style={styles.inputTitle}>specialite</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={(text) => this.setState({ specialite:text })} value={this.state.specialite}
+                                value={this.state.specialite}
+                            ></TextInput>
+                        </View>
+
+
+
+
+                    <View style={{ marginTop: 32 }}>
+                        <Text style={styles.inputTitle}>Email Address</Text>
+                        <TextInput
+                            style={styles.input}
+                            autoCapitalize="none"
+                            onChangeText={(text) => this.setState({ email:text })} value={this.state.email}
+                            value={this.state.email}
+                        ></TextInput>
+                    </View>
+
+                    <View style={{ marginTop: 32 }}>
+                        <Text style={styles.inputTitle}>Password</Text>
+                        <TextInput
+                            style={styles.input}
+                            secureTextEntry
+                            autoCapitalize="none"
+                            onChangeText={(text) => this.setState({ password:text })} value={this.state.password}
+                            value={this.state.password}
+                        ></TextInput>
+                    </View>
+                </View>
+
+
+
+
+
+:
+
+
+
+
+
+
+
+
+
 
                 <View style={styles.form}>
                     <View>
@@ -102,14 +299,22 @@ export default class RegisterScreen extends React.Component {
                             value={this.state.name}
                         ></TextInput>
                     </View>
-
-
                         <View>
                             <Text style={styles.inputTitle}>Username</Text>
                             <TextInput
                                 style={styles.input}
                                 onChangeText={(text) => this.setState({ username:text })} value={this.state.username}
                                 value={this.state.username}
+                            ></TextInput>
+                        </View>
+
+                           <View>
+                            <Text style={styles.inputTitle}>Phone number</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={(text) => this.setState({ tel:text })} value={this.state.tel}
+                                value={this.state.tel}
+                                 keyboardType={'numeric'}
                             ></TextInput>
                         </View>
 
@@ -135,8 +340,37 @@ export default class RegisterScreen extends React.Component {
                     </View>
                 </View>
 
+
+
+
+                }
+
+
+</ScrollView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
-                    <Text style={{ color: "#FFF", fontWeight: "500" }}>Register</Text>
+                    <Text style={{ color: "#FFF", fontWeight: "500" }}>Sign up</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -144,7 +378,7 @@ export default class RegisterScreen extends React.Component {
                     onPress={() => this.props.navigation.navigate("Login")}
                 >
                     <Text style={{ color: "#414959", fontSize: 13 }}>
-                        Already have an account? <Text style={{ fontWeight: "500", color:"#00ff00" }}>Login now</Text>
+                        Already have an account? <Text style={{ fontWeight: "500", color: "#00ff00" }}>Sign in</Text>
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -158,7 +392,7 @@ const styles = StyleSheet.create({
 
     },
     greeting: {
-        marginTop: 32,
+        marginTop: 25,
         fontSize: 18,
         fontWeight: "400",
         textAlign: "center"
@@ -170,7 +404,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 30
     },
     form: {
-        marginTop: 90,
+        marginTop: 85,
         marginBottom: 38,
         marginHorizontal: 30
     },
@@ -222,3 +456,23 @@ const styles = StyleSheet.create({
 });
 
 
+// import React from "react";
+// import { View, Text, StyleSheet } from "react-native";
+//
+// export default class RegisterScreen extends React.Component {
+//     render() {
+//         return (
+//             <View style={styles.container}>
+//                 <Text>register Screen</Text>
+//             </View>
+//         );
+//     }
+// }
+//
+// const styles = StyleSheet.create({
+//     container: {
+//         flex: 1,
+//         alignItems: "center",
+//         justifyContent: "center"
+//     }
+// });
