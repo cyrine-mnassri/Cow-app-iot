@@ -4,7 +4,8 @@ import { ImageBackground,Image,StyleSheet, Text, View,TouchableOpacity } from 'r
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { color } from 'react-native-reanimated';
 import { AntDesign,MaterialIcons } from '@expo/vector-icons'; 
-
+import {LogBox} from 'react-native';
+LogBox.ignoreAllLogs();
 const slides = [
   {
     key:"one",

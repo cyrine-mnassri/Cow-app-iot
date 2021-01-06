@@ -8,7 +8,8 @@ import PhotoList from '../components/photoList.js'
 import { Picker } from 'react-native'
 import {Ionicons,Entypo,MaterialIcons ,AntDesign,FontAwesome} from "@expo/vector-icons";
 import DateTimePickerModal from 'react-native-modal-datetime-picker'; 
-
+import {LogBox} from 'react-native';
+LogBox.ignoreAllLogs();
 
 export default class EditScreen  extends React.Component {
 
@@ -28,12 +29,7 @@ export default class EditScreen  extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return {
           headerShown:false,
-          headerRight: (
-            <TouchableHighlight onPress={navigation.getParam('logout')}>
-                       <AntDesign name="close" size={25} color="#73788B"  />
-
-            </TouchableHighlight>
-          )
+         
         };
       };
 
@@ -50,31 +46,23 @@ export default class EditScreen  extends React.Component {
         this.setState({visibility:true});
       
       }
-      _logout = () => {
-        this.props.navigation.navigate('Animal');
-      }
-    
-
+  
  
    
 
 
     componentDidMount(){
 
-      //  this.props.navigation.setParams({ logout: this._logout });
-
         
         const { navigation } = this.props;  
 
         const user_name = navigation.getParam('value','');
         const userid=f.auth().currentUser.uid
-const key=user_name
+        const key=user_name
 
         database.ref('users').child(userid).child(`photos/${key}`).on('value', (snapshot) =>{
-            var data = []
-          // alert(`Bar code with type ${snapshot.val().animalhealth} `);
-         
-       
+            var data = []         
+    
        this.setState({
        
         
@@ -101,7 +89,7 @@ const key=user_name
 
 
 
-    saveProfile = () =>{
+savecowupdates = () =>{
         var animalhealth = this.state.animalhealth;
         var animalreference = this.state.animalreference;
         var animaltype = this.state.animaltype;
@@ -160,7 +148,7 @@ const key=user_name
         return (
 
             <View style={styles.container}>
-      <View style={styles.header}>
+                <View style={styles.header}>
                     <Text style={styles.headerTitle}>Update Cattle </Text>
                     <TouchableOpacity  style={styles.headerTitle} onPress={()=>this.props.navigation.navigate('Animal')}>
                     <AntDesign name="close" size={25} color="#73788B"  />
@@ -219,16 +207,8 @@ const key=user_name
 
             </Picker>
 
-          
-
-
-
-
-
-
-
                    <TouchableOpacity style={{backgroundColor:'#008000', padding:10,textAlign:'center',borderRadius:3, marginTop: 130}}
-                                    onPress={() => this.saveProfile()}>
+                                    onPress={() => this.savecowupdates()}>
                                     <Text style={{color:'white', fontWeight:'bold',textAlign:'center'}}>Save Changes</Text>
                                 </TouchableOpacity>
                                 </View>

@@ -9,8 +9,6 @@ import {
   Dimensions,Button,ImageBackground
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; 
-
-
 import { TouchableOpacity,Alert } from "react-native";
 import {FlatList} from 'react-native-gesture-handler';
 import { Ionicons,FontAwesome5 ,MaterialIcons,Feather,Fontisto,FontAwesome,Foundation} from "@expo/vector-icons";
@@ -25,7 +23,8 @@ import HorizontalCalendar from 'horizontal-calendar'
 import  {Calendar}  from 'react-native-toggle-calendar';
 import { color } from 'react-native-reanimated';
 import { SearchBar,Avatar, Badge, Icon, withBadge } from 'react-native-elements';
-
+import {LogBox} from 'react-native';
+LogBox.ignoreAllLogs();
 
 export default class AnimalScreen extends React.Component {
   
@@ -127,8 +126,7 @@ export default class AnimalScreen extends React.Component {
 
 
       healthReport=(id,reference)=>{
-        //function to make two option alert
-        
+      
         this.props.navigation.navigate('healthReport', {id: id,reference:reference});
       
       
@@ -149,22 +147,19 @@ export default class AnimalScreen extends React.Component {
       } ;
 
       
-shop=(id)=>{
-  //function to make two option alert
-   //alert(` ${id} `);
+         shop=(id)=>{
 
-  this.props.navigation.navigate('addshop', {ok: id})
+            this.props.navigation.navigate('addshop', {ok: id})
 
 
-};
-      _twoOptionAlertHandler=(id)=>{
+          };
+      gotoEdit=(id)=>{
         //function to make two option alert
        // alert(` ${id} `);
         this.props.navigation.navigate('UpdateCattle', {value: id})
       }
       
-       OptionAlertHandler=(id)=>{
-        //function to make two option alert
+      delete=(id)=>{
         Alert.alert(
 
           //title
@@ -193,7 +188,7 @@ shop=(id)=>{
                     <View style={{flexDirection:"row",
                   
                   
-          }}>
+                 }}>
                     <View style={{marginRight:10}}>
 
                     <TouchableOpacity  onPress={()=> this.props.navigation.navigate("Login")} >
@@ -205,7 +200,7 @@ shop=(id)=>{
                      status="error"
                      containerStyle={{ position: 'absolute', top: -5, right: -2 }}
                         />
-</View>
+               </View>
 <View>
 
                     <TouchableOpacity  onPress={()=> this.props.navigation.navigate("Mychats")} >
@@ -219,47 +214,31 @@ shop=(id)=>{
                         />
 </View>
 
-
-
- 
-
-
-
                     </View>
-</View>
+    </View>
 
-<SearchBar
+      <SearchBar
         placeholder="Type cow name"
         onChangeText={this.filterItem}
         value={search}
      
       />
       <View  style={{flexDirection:"row",justifyContent:"space-between",marginHorizontal:7,marginTop:15,marginBottom:15}}> 
-<Text style={{fontSize:15,fontWeight:"600",marginTop:5,color:"#2F4F4F"}}>  New Cattle  </Text>
-<TouchableOpacity style={{marginRight:15,marginTop:2}} onPress={()=> this.props.navigation.navigate("AddAnimalScreen")} >
+      <Text style={{fontSize:15,fontWeight:"600",marginTop:5,color:"#2F4F4F"}}>  New Cattle  </Text>
+       <TouchableOpacity style={{marginRight:15,marginTop:2}} onPress={()=> this.props.navigation.navigate("AddAnimalScreen")} >
                     <Ionicons   name="md-add-circle-sharp" size={30} color="#008000"  />
                     </TouchableOpacity>
-
-
                     </View>
-            
-
- 
-
-                  
                         <FlatList
-                        
+              
                         data={this.state.dataSource}
                         keyExtractor={(item, index) => index.toString()}
-                   //     style={styles.la}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item,index }) => (
-                        <View style={styles.labseniItem}>
+                        <View style={styles.ListItem}>
                              
                         <View style={{ flex: 1 ,width:'100%'}}>
                        
-
-
                         <View style={{flexDirection:"row",justifyContent:"space-between"}}>
 
                         <Text style={{marginTop:5,fontWeight:"600",fontSize:15,color:"#2F4F4F"}}>{item.animalbreed}</Text>
@@ -284,10 +263,10 @@ shop=(id)=>{
 
                 </View>
                            <View style={{ flexDirection:"row-reverse",marginTop:20,alignItems:"flex-end"}}>
-                            <TouchableOpacity style={{marginRight:20}} onPress={()=> this.OptionAlertHandler(item.key)} >
+                            <TouchableOpacity style={{marginRight:20}} onPress={()=> this.delete(item.key)} >
                                   <Ionicons name="ios-trash" size={22} color="#C0C0C0"  />
                             </TouchableOpacity>
-                            <TouchableOpacity style={{marginRight:7}}  onPress={()=> this._twoOptionAlertHandler(item.key)} >
+                            <TouchableOpacity style={{marginRight:7}}  onPress={()=> this.gotoEdit(item.key)} >
                              <FontAwesome name="edit" size={22} color="#C0C0C0" />
                           </TouchableOpacity> 
                            <TouchableOpacity style={{marginRight:7}}   onPress={()=> this.shop(item.key)}>
@@ -335,82 +314,27 @@ headerTitle: {
     fontSize: 20,
     fontWeight: "700"
 },
-    header1: {
-      paddingTop:30,
-      paddingBottom: 30,
-      backgroundColor: "#fff",
-      alignItems: "center",
-      justifyContent: "center",
-      borderBottomWidth: 1,
-      borderBottomColor: "#EBECF4",
-      shadowColor: "#454D65",
-      shadowOffset: {height: 5},
-      shadowRadius: 15,
-      shadowOpacity: 0.2,
-      zIndex: 10,
-      flexDirection:"row"
-     
-  },
-    headerTitle1: {
-        fontSize: 20,
-        fontWeight: "500",
-        
-        
-        
-    },
-    listItem:{
-      backgroundColor: "#008000",
-      borderRadius: 10,
-      padding: 2,
-      marginVertical: 2
-      ,borderColor:"#D3D3D3",
-      borderWidth:1,
-      borderRadius:5,
-      height:200,marginLeft:10
+    
 
-    },
- 
   
-    labseniItem: {
+ListItem: {
         backgroundColor: "#fff",
         borderRadius: 10,
         padding: 15,
-        flexDirection: "row",      marginVertical: 7,marginHorizontal:7
+        flexDirection: "row",   
+         marginVertical: 7,
+         marginHorizontal:7
 
 
     },
-    avatar: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
-        marginRight: 16
-    },
-    name: {
-        fontSize: 15,
-        fontWeight: "500",
-        color: "#454D65"
-    },
-    timestamp: {
-        fontSize: 11,
-        color: "#C4C6CE",
-        marginTop: 4
-    },
-    post: {
-        marginTop: 16,
-        fontSize: 14,
-        color: "#838899"
-    },
+   
+
+   
+   
     postImage: {
         width: undefined,
         height: 150,
         borderRadius: 10,
         marginVertical: 16
-    },input: {
-        height: 30,
-        width:200,
-        backgroundColor: '#eaeaea',
-        borderRadius: 25,
-        padding: 5,
-        marginTop:10,
-        marginRight:10 }
+    }
 });

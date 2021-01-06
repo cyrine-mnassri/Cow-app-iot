@@ -6,7 +6,11 @@ import {Ionicons,Entypo,MaterialIcons ,AntDesign,FontAwesome} from "@expo/vector
 
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { useRoute } from '@react-navigation/native';
+import {LogBox} from 'react-native';
+  LogBox.ignoreAllLogs();
+
 export default class ScanScreen extends React.Component {
+  
   static navigationOptions = {
     headerShown: false
 };

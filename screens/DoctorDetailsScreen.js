@@ -4,17 +4,15 @@ import { AntDesign } from '@expo/vector-icons';
 
 import { NavigationActions } from 'react-navigation';
 import * as firebase from 'firebase';
-
+import {LogBox} from 'react-native';
+LogBox.ignoreAllLogs();
 
 export default class DoctorDetailsScreen extends React.Component {
   
   constructor() {
     super();
     this.state = {
-      
-      dataSource: [],
-      loaded: false,
-      phoneNumber:""
+    
 
      
     };
@@ -23,18 +21,11 @@ export default class DoctorDetailsScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return {
           headerShown:false,
-          headerRight: (
-            <TouchableOpacity onPress={navigation.getParam('logout')}>
-               <AntDesign name="close" size={25} color="#73788B"  />
-            </TouchableOpacity>
-          )
+         
         };
       };
 
-    _logout = () => {
-        this.props.navigation.navigate('Vets');
-      }
-    
+  
 
 
     componentDidMount = ()=> {

@@ -3,7 +3,9 @@ import React from "react";
 import {Ionicons} from "@expo/vector-icons";
 import {TextInput, View, Text, StyleSheet, Button, Image, FlatList, TouchableOpacity} from "react-native";
 import {f, auth, database, storage} from "../config/config.js"
-import PhotoList from '../components/photoList.js'
+
+import {LogBox} from 'react-native';
+  LogBox.ignoreAllLogs();
 
 
 export default class ProfileScreen extends React.Component {
@@ -82,8 +84,7 @@ export default class ProfileScreen extends React.Component {
 
     logoutUser = () => {
         f.auth().signOut();  
-this.props.navigation.navigate("Login")
-
+       this.props.navigation.navigate("Login")
         alert('Logged Out')
     };
 
@@ -176,46 +177,17 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    profile: {
-        marginTop: 64,
-        alignItems: "center"
-    },
+   
     avatarContainer: {
         shadowColor: "#151734",
         shadowRadius: 30,
         shadowOpacity: 0.4
     },
-    avatar: {
-        width: 136,
-        height: 136,
-        borderRadius: 68
-    },
+  
     name: {
         marginTop: 24,
         fontSize: 16,
         fontWeight: "600"
     },
-    statsContainer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        margin: 32
-    },
-    stat: {
-        alignItems: "center",
-        flex: 1
-    },
-    statAmount: {
-        color: "#4F566D",
-        fontSize: 18,
-        fontWeight: "300"
-    },
-    statTitle: {
-        color: "#C3C5CD",
-        fontSize: 12,
-        fontWeight: "500",
-        marginTop: 4
-    },
-    b1: {
-        marginTop: 15
-    }
+  
 });

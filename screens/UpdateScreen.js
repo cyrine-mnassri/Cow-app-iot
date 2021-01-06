@@ -5,11 +5,6 @@ import { AntDesign } from '@expo/vector-icons';
 import { NavigationActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
-
-
-
-
-
 export default class UpdateScreen extends React.Component {
   
     constructor(props) {
@@ -18,12 +13,6 @@ export default class UpdateScreen extends React.Component {
            
         };
     }
-
-
-
-
-
-
 
     static navigationOptions = ({ navigation }) => {
         return {
@@ -77,13 +66,7 @@ const styles = StyleSheet.create({
 
     }},
 
-    
-    greeting: {
-        marginTop: -32,
-        fontSize: 18,
-        fontWeight: "400",
-        textAlign: "center"
-    },
+   
     headerTitle: {
         fontWeight: 'Bold',
         fontSize: 20,
@@ -93,31 +76,5 @@ const styles = StyleSheet.create({
         marginHorizontal: 30
 
     },
-    button: {
-        
-        marginHorizontal: 30,
-        backgroundColor: "#00ff00",
-        height: 52,
-        alignItems: "center",
-        justifyContent: "center",borderRadius:8
-    },
-    input: {
-        marginHorizontal: 30,
-        backgroundColor: "#00ff00",
-        borderRadius: 8,
-        height: 52,
-        paddingHorizontal: 5,
-        backgroundColor: 'white',
-        marginBottom: 10,
-        alignItems: "center",
-        justifyContent: "center"
-      },
 
-    text: {
-        marginHorizontal: 30,
-        height: 52,
-        alignItems: "center",
-        justifyContent: "center",
-        marginBottom:30
-    }
 });

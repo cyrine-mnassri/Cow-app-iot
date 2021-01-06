@@ -27,7 +27,6 @@ export default class VetsScreen extends Component {
     };
   }
 
-
                    componentDidMount(){
                     database.ref('users').orderByChild('type').equalTo("doctor").on('value', (snapshot) =>{
                       var data = []
@@ -40,7 +39,6 @@ export default class VetsScreen extends Component {
                               nom:child.val().username,
                               prenom:child.val().name,
                               phone:child.val().tel,
-                             // specialite:child.val().specialite,
                               email:child.val().email,
                               image:child.val().avatar,
 
@@ -96,23 +94,15 @@ export default class VetsScreen extends Component {
    }
 
 
- 
-
-
-
-
-
    call=(phone)=>{
     //const { phoneNumber } = this.state
 
     Linking.openURL(`tel:${phone}`)
     this.setState({phoneNumber:phone})
   }
-
   goToDoctorDetails=(id)=>{
     //const { phoneNumber } = this.state
     this.props.navigation.navigate('DoctorDetails', {photoId: id})
-
  
   }
   goToChat=(uid,name,image,username)=>{
@@ -123,7 +113,6 @@ export default class VetsScreen extends Component {
       username:username
          
     })
-//alert(id)
  
   }
   separator = () => {
@@ -133,7 +122,6 @@ export default class VetsScreen extends Component {
   };
 
   render() {
-    console.disableYellowBox = true;
     const { search } = this.state;
 
     return (
@@ -234,37 +222,8 @@ headerTitle: {
     fontSize: 20,
     fontWeight: "500"
 },
-shopping:{
-  fontSize:20,
-   fontWeight:'bold',
- 
-},
-call:{
-  color:"green",
-  fontSize:20,
-  fontWeight:'bold',
-   },
- 
-addButton: {
-  backgroundColor: '#E9446A',
-  borderColor: '#E9446A',
-  borderWidth: 1,
-  height: 80,
-  width: 80,
-  borderRadius: 50,
-  alignItems: 'center',
-  justifyContent: 'center',
-  position: 'absolute',
-  bottom: 20,
-  right:20,
-  shadowColor: "#000000",
-  shadowOpacity: 0.8,
-  shadowRadius: 2,
-  shadowOffset: {
-    height: 1,
-    width: 0
-  }
-}
+
+
  
  
   

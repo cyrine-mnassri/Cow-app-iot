@@ -18,46 +18,21 @@ export default class RegisterOptionScreen extends React.Component {
         };
     }
 
-
-
-
- 
-
-  
-
-
-   
-
-
-
-
-
-
-
-
-
-
-
     render() {
         return (
             <View style={styles.container}>
                 <StatusBar barStyle="light-content"></StatusBar>
 
 
-
-            
                 <Text style={styles.greeting}>{`Hello!`}</Text>   
-                <TouchableOpacity style={styles.button}
-                    onPress={() => this.props.navigation.navigate("Register",{value: "farmer"})}
-
->
-                    <Text style={{ color: "#FFF", fontWeight: "500" }}>Farmer</Text>
+                <TouchableOpacity style={styles.button}onPress={() => this.props.navigation.navigate("Register",{value: "farmer"})}
+                  >
+                  <Text style={{ color: "#FFF", fontWeight: "500" }}>Farmer</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate("Register",{value: "doctor"})}
- >
-                    <Text style={{ color: "#FFF", fontWeight: "500" }}>Doctor</Text>
+                >
+                 <Text style={{ color: "#FFF", fontWeight: "500" }}>Doctor</Text>
                 </TouchableOpacity>
-
             </View>
         );
     }
@@ -74,29 +49,8 @@ const styles = StyleSheet.create({
         fontWeight: "400",
         textAlign: "center"
     },
-    errorMessageee: {
-        height: 72,
-        alignItems: "center",
-        justifyContent: "center",
-        marginHorizontal: 30
-    },
-    form: {
-        marginTop: 85,
-        marginBottom: 38,
-        marginHorizontal: 30
-    },
-    inputTitle: {
-        color: "#8A8F9E",
-        fontSize: 10,
-        textTransform: "uppercase"
-    },
-    input: {
-        borderBottomColor: "#8A8F9E",
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        height: 40,
-        fontSize: 15,
-        color: "#161F3D"
-    },
+
+
     button: {marginTop:20,
         marginHorizontal: 30,
         backgroundColor: "#008000",

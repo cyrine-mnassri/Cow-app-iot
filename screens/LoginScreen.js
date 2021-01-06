@@ -13,6 +13,8 @@ import {View,
 // import * as firebase from 'firebase';
 import {f, auth, database, storage} from "../config/config.js"
 import { AntDesign,MaterialIcons } from '@expo/vector-icons'; 
+import {LogBox} from 'react-native';
+LogBox.ignoreAllLogs();
 
 export default class LoginScreen extends React.Component {
     static navigationOptions = {
@@ -158,12 +160,7 @@ const styles = StyleSheet.create({
         ,backgroundColor:"#F70B0B",
         backgroundColor:"#FFFFFF"
     },
-    greeting: {
-        marginTop: -32,
-        fontSize: 18,
-        fontWeight: "400",
-        textAlign: "center"
-    },
+   
     headerTitle: {
         marginTop: 32,
         fontSize: 18,
@@ -180,15 +177,8 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginHorizontal: 15
     },
-    inputTitle: {
-        color: "#8A8F9E",
-        fontSize: 10,
-        textTransform: "uppercase",
-       
-    },
+  
     input: {
-     
-
         height: 20,
         width: 270,
         paddingHorizontal: 5,
@@ -213,20 +203,10 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontWeight: "600",
         textAlign: "center"
-    }
-    ,
-    topBar:{
-    width: null,
-    height: "30%",
-   /* backgroundColor:'#FFFFFF'*/
- 
-    }
-    ,
-    imglogin:
-    {
-      width:null,
-        height:"100%"
-    },
+    } ,
+   
+   
+    
     image:{
     flex: 1,
     resizeMode: "cover",

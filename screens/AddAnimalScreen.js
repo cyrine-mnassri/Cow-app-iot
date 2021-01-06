@@ -6,9 +6,9 @@ import {f, auth, database, storage} from "../config/config.js";
 import DateTimePickerModal from 'react-native-modal-datetime-picker'; 
 import { Picker } from 'react-native'
 import RBSheet from "react-native-raw-bottom-sheet";
-
 import {Ionicons,Entypo,MaterialIcons ,AntDesign,FontAwesome} from "@expo/vector-icons";
-
+import {LogBox} from 'react-native';
+LogBox.ignoreAllLogs();
 export default class AddAnimalScreen extends React.Component {
 
     constructor(propos) {
@@ -39,14 +39,14 @@ export default class AddAnimalScreen extends React.Component {
         };
       };
 
-    _logout = () => {
-        this.props.navigation.navigate('Animal');
-      }
+   
     
 
 
     componentDidMount = ()=> {
-        this.props.navigation.setParams({ logout: this._logout });}
+    
+    }
+
 
     handleConfirm=(date)=>{
         this.setState({DateDisplay:date.toUTCString()});
@@ -261,11 +261,7 @@ export default class AddAnimalScreen extends React.Component {
 
 
     };
-    alertt = () => {
-        const { navigation } = this.props;  
-        const user_name = navigation.getParam('value','');  
-        alert({user_name});
-    };
+
 
     render() {
         const { navigation } = this.props;  
@@ -286,8 +282,6 @@ export default class AddAnimalScreen extends React.Component {
                     <View style={{flex:1}}>
 
          
-
-
                         <View  style={{backgroundColor:"#F3F3F3"}}>
 
                         <ScrollView>
@@ -335,8 +329,8 @@ export default class AddAnimalScreen extends React.Component {
                    
                    <Text  style={styles.textDesign} >Animal type</Text>
                <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
-   <AntDesign style={{marginTop:20}} name="caretdown" size={12} color="#008000" ></AntDesign>
-   < Picker style={{width:'100%',backgroundColor:"#FFFFFF"}}
+            <AntDesign style={{marginTop:20}} name="caretdown" size={12} color="#008000" ></AntDesign>
+              < Picker style={{width:'100%',backgroundColor:"#FFFFFF"}}
                  selectedValue={this.state.animaltype}
                  onValueChange={(itemValue, itemIndex) =>
                    this.setState({ animaltype: itemValue })
@@ -365,9 +359,9 @@ export default class AddAnimalScreen extends React.Component {
 
 
 
-<Text style={styles.textDesign} >Name</Text>
+                              <Text style={styles.textDesign} >Name</Text>
 
-<TextInput
+                              <TextInput
                                 editable={true}
                                 autoFocus={true}
                                 multiline={true}
@@ -378,10 +372,10 @@ export default class AddAnimalScreen extends React.Component {
                                 value={this.state.text}
                             />
                           
-                        <Text style={styles.textDesign} >Birth</Text>
+                                  <Text style={styles.textDesign} >Birth</Text>
 
 
-                        <View style={{ flexDirection: 'row',justifyContent:"space-between"}}>
+                                  <View style={{ flexDirection: 'row',justifyContent:"space-between"}}>
                     
                             <TextInput
                                 editable={true}
@@ -394,29 +388,25 @@ export default class AddAnimalScreen extends React.Component {
                              value={this.state.DateDisplay}
                             />
 
-<DateTimePickerModal
-isVisible={this.state.visibility}
-onConfirm={this.handleConfirm}
-onCancel={this.onPressCancel}
-mode="date"
+                           <DateTimePickerModal
+                         isVisible={this.state.visibility}
+                          onConfirm={this.handleConfirm}
+                              onCancel={this.onPressCancel}
+                              mode="date"
 
-/>
+                                 />
 
 
-<TouchableOpacity style={{marginTop:8}} onPress={this.onPressButton}>
+                    <TouchableOpacity style={{marginTop:8}} onPress={this.onPressButton}>
                             <AntDesign name="calendar" size={34} color="#008000"></AntDesign>
                         </TouchableOpacity>
-
-
-
  
-</View>
+                          </View>
 
 
 
 
 <Text style={styles.textDesign} >Current Health-state</Text>
-
 <View style={{flexDirection:"row",justifyContent:"flex-start"}}>
    <AntDesign style={{marginTop:20}} name="caretdown" size={12} color="#008000" ></AntDesign>
             < Picker style={{width:'100%',backgroundColor:"#FFFFFF"}}
@@ -426,20 +416,13 @@ mode="date"
               }>
               <Picker.Item label="healthy" value="healthy" />
               <Picker.Item label="sick" value="sick" />
-            
-
             </Picker>
-</View>
+            </View>
             <View style={{flexDirection:"row"}}>
-
-
-
-                       <TouchableOpacity  onPress={() => this.RBSheet.open()}  style={{ marginTop:10,resizeMode:'cover',backgroundColor:"#008000" ,width:50,height:50,borderRadius:10,alignContent:"center",justifyContent:"center",alignItems:"center" ,marginRight:10}}  >
-                            <Ionicons name="md-camera" size={40} color="#FFFFFF"></Ionicons>
-                        </TouchableOpacity>
-
-
-                        <RBSheet
+              <TouchableOpacity  onPress={() => this.RBSheet.open()}  style={{ marginTop:10,resizeMode:'cover',backgroundColor:"#008000" ,width:50,height:50,borderRadius:10,alignContent:"center",justifyContent:"center",alignItems:"center" ,marginRight:10}}  >
+               <Ionicons name="md-camera" size={40} color="#FFFFFF"></Ionicons>
+               </TouchableOpacity>
+           <RBSheet
           ref={ref => {
             this.RBSheet = ref;
           }}
@@ -473,42 +456,20 @@ mode="date"
     </View>
    
         </RBSheet>
-
-
-
-
-
-
-
-                        <Image source={{uri : this.state.uri}}
-                                   style={{marginTop:10,resizeMode:'cover', width:50,height:50,borderRadius:10}}/>
-                        </View>
-
-
-
-                     
-
-
-                        <TouchableOpacity onPress={()=> this.uploadPublish()}
-                                              style={{alignSelf:'center',marginHorizontal:'auto', backgroundColor:"#008000", borderRadius:5, paddingVertical:10, paddingHorizontal:20,marginTop:10,width:'100%'}}>
-                              
-
-                                <Text style={{textAlign:'center', color:'white'}}>Save Animal</Text>
-                            </TouchableOpacity>
+        <Image source={{uri : this.state.uri}}
+         style={{marginTop:10,resizeMode:'cover', width:50,height:50,borderRadius:10}}/>
+          </View>
+          <TouchableOpacity onPress={()=> this.uploadPublish()}
+            style={{alignSelf:'center',marginHorizontal:'auto', backgroundColor:"#008000", borderRadius:5, paddingVertical:10, paddingHorizontal:20,marginTop:10,width:'100%'}}>
+               <Text style={{textAlign:'center', color:'white'}}>Save Animal</Text>
+           </TouchableOpacity>
       
 </View>       
 </ScrollView>
+</View>
+ </View>
 
-                        </View>
-
-                    </View>
-
-            
-
-
-                   
-                  
-               
+           
             </View>
         );
     }
@@ -595,11 +556,6 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#FFFFFF',
         paddingTop: 20,
-        // borderTopLeftRadius: 20,
-        // borderTopRightRadius: 20,
-        // shadowColor: '#000000',
-        // shadowOffset: {width: 0, height: 0},
-        // shadowRadius: 5,
-        // shadowOpacity: 0.4,
+ 
       },
 });

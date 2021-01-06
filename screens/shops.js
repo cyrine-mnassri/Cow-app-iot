@@ -8,27 +8,9 @@ import { AntDesign ,FontAwesome,EvilIcons} from '@expo/vector-icons';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { SearchBar,Avatar, Badge, Icon, withBadge } from 'react-native-elements';
 
-import {
-    SCLAlert,
-    SCLAlertButton
-  } from 'react-native-scl-alert'
-import {
-    Menu,
-    MenuProvider,
-    MenuOptions,
-    MenuOption,
-    MenuTrigger,
-  } from 'react-native-popup-menu';
   import {LogBox} from 'react-native';
   LogBox.ignoreAllLogs();
-const images = [
-    {
-     image:'https://images.unsplash.com/photo-1567226475328-9d6baaf565cf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60',
-    },
-   {
-     image:'https://images.unsplash.com/photo-1455620611406-966ca6889d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1130&q=80',
-   },
-   ]
+
 
    export default class shops extends React.Component {
     constructor(props) {
@@ -43,7 +25,6 @@ const images = [
             ok:'',
             visible: false,
             show: false,
-          //  myKey: null,
             vvv:"",   
 
 
@@ -54,13 +35,12 @@ const images = [
     _openMenu = () => this.setState({ visible: true });
 
     _closeMenu = () => this.setState({ visible: false });
+
     static navigationOptions = ({ navigation }) => {
         return {
 
-            
-          
           headerLeft: (
-            <TouchableHighlight onPress={navigation.getParam('logout')}>
+            <TouchableHighlight onPress={navigation.getParam('close')}>
                        <AntDesign name="close" size={25} color="#73788B"  />
 
             </TouchableHighlight>
@@ -68,11 +48,12 @@ const images = [
         };
       };
     
-    _logout = () => {
+    close = () => {
         this.props.navigation.navigate('shops');
       }
+
     componentDidMount = () => {
-        this.props.navigation.setParams({ logout: this._logout });
+        this.props.navigation.setParams({ close: this.close });
 
         const {isUser, userId}= this.props;
         if (isUser == true) {
@@ -82,26 +63,16 @@ const images = [
             loadFeed('')
         }
 
-       
-       
-      
-           
-      
-          
-
-
+    
     };
 
     goToComment=(id)=>{
-        //function to make two option alert
-       //  alert(` ${id} `);
-      
+  
        this.props.navigation.navigate('Comments', {photoId: id})
     };
 
     goToDetails=(id)=>{
-        //function to make two option alert
-       //  alert(` ${id} `);
+    
       
        this.props.navigation.navigate('Details', {photoId: id})
     };
@@ -156,15 +127,10 @@ const images = [
 
     addToFlatlist = (photo_feed, data, photo) => {
         var that = this;
-
         var photoObjt = data[photo];
         database.ref('users').child(photoObjt.author).once('value').then(function (snapshot) {
-         
-         
           const exists = (snapshot.val() !== null);
             if (exists) data = snapshot.val();
-   
-     
             photo_feed.push({
                 id: photo,
                 url: photoObjt.url,
@@ -198,7 +164,6 @@ const images = [
             photo_feed: []
         });
         var that = this;
-
         var loadRef = database.ref('shopsphotos');
         if(userId!=''){
             loadRef = database.ref('users').child(userId).child('photos');
@@ -210,8 +175,6 @@ const images = [
             for (var photo in data) {
                 that.addToFlatlist(photo_feed, data, photo);
             }
-
-
         }).catch(error => console.log(error));
 
 
@@ -249,7 +212,6 @@ const images = [
     
       handleClose = (id) => {
         this.setState({ show: false })
-        
         this.props.navigation.navigate('UpdatePost', {photoId: id})
 
       }
@@ -260,7 +222,6 @@ const images = [
   
     countComment =  () => {
   
-
       database.ref('comments').child("aedf500f-1396-c38c-be37-d8e2-17a7-5a11-")
       .once("value").then(function(snapshot) {
         var vvv =snapshot.numChildren() 
@@ -285,25 +246,6 @@ const images = [
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     OptionAlertHandler=(id)=>{
         //function to make two option alert
         Alert.alert(
@@ -320,18 +262,13 @@ const images = [
         );
       }
       
-      achterco = () => {
- 
-
-   };
+   
 
 
     render() {
-        // LayoutAnimation.easeInEaseOut();
 
         return (
-
-            <View style={styles.container}>
+  <View style={styles.container}>
                    <View style={styles.header}>
                     <Text style={styles.headerTitle}>I-Cattle Market</Text>
 
@@ -371,7 +308,7 @@ const images = [
                         style={styles.la}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item,index }) => (
-                        <View style={styles.labseniItem}>
+                        <View style={styles.listItem}>
                              
                         <View style={{ flex: 1 ,width:'100%'}}>
                         <View style={{flexDirection:"row",justifyContent:"space-between"}}>
@@ -546,7 +483,7 @@ const styles = StyleSheet.create({
     la: {
         marginHorizontal: 16
     },
-    labseniItem: {
+    listItem: {
         backgroundColor: "#FFF",
         borderRadius: 15,
         padding: 8,
@@ -651,12 +588,7 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#FFFFFF',
         paddingTop: 20,
-        // borderTopLeftRadius: 20,
-        // borderTopRightRadius: 20,
-        // shadowColor: '#000000',
-        // shadowOffset: {width: 0, height: 0},
-        // shadowRadius: 5,
-        // shadowOpacity: 0.4,
+        
       },
 });
 

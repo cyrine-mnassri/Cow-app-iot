@@ -7,7 +7,8 @@ import * as ImagePicker from "expo-image-picker";
 import {f, auth, database, storage} from "../config/config.js";
 import { AntDesign } from '@expo/vector-icons'; 
 import RBSheet from "react-native-raw-bottom-sheet";
-
+import {LogBox} from 'react-native';
+LogBox.ignoreAllLogs();
 export default class AddCattleToShopScreen extends React.Component {
 
     constructor(props) {
@@ -19,7 +20,6 @@ export default class AddCattleToShopScreen extends React.Component {
             visibility: false,
             DateDisplay:"",
             switchValue: false,
-
             loggedin: false,
             imageId: this.uniqueId(),
             imageSelected: false,
@@ -65,12 +65,7 @@ export default class AddCattleToShopScreen extends React.Component {
         return {
           
             headerShown:false,
-          headerRight: (
-            <TouchableHighlight onPress={navigation.getParam('logout')}>
-                       <AntDesign name="close" size={25} color="#73788B"  />
-
-            </TouchableHighlight>
-          )
+         
         };
       };
 
@@ -209,11 +204,7 @@ export default class AddCattleToShopScreen extends React.Component {
         });
 
 
-        // var snapshot = ref.put(blob).on('state_changed', snapshot => {
-        // console.log('Progress', snapshot.bytesTransferred, snapshot.totalBytes);
-//     }
-// )
-//     ;
+        
 
 
     };
@@ -262,26 +253,17 @@ export default class AddCattleToShopScreen extends React.Component {
 
 
     };
-    _logout = () => {
-        this.props.navigation.navigate('Animal');
-      }
+
     
 
     componentDidMount(){
-        this.props.navigation.setParams({ logout: this._logout });
 
-           
         const { navigation } = this.props;  
-
         const user_name = navigation.getParam('ok','');
         const userid=f.auth().currentUser.uid
-const key=user_name
-
+        const key=user_name
         database.ref('users').child(userid).child(`photos/${key}`).on('value', (snapshot) =>{
-            var data = []
-          // alert(`Bar code with type ${snapshot.val().animalhealth} `);
          
-       
        this.setState({
        
         
@@ -316,22 +298,16 @@ const key=user_name
                           <Text style={styles.headerTitle}>Trade  </Text>
                           <TouchableOpacity  style={styles.headerTitle} onPress={()=>this.props.navigation.navigate('Animal')}>
                           <AntDesign name="close" size={25} color="#73788B"  />
-      
                           </TouchableOpacity>
                           </View>
                 <ScrollView>
               
                     <View style={{flex:1}}>
-
-                       
-
-
                         <View style={{margin:10}}>
-                      
-<Text style={{color: '#008000',fontSize:15,marginBottom:20,fontWeight:"700"}}>Animal to sell</Text>
+                        <Text style={{color: '#008000',fontSize:15,marginBottom:20,fontWeight:"700"}}>Animal to sell</Text>
 
                             <Text style={{marginTop : 5}}>Prix </Text>
-                                               <TextInput
+                            <TextInput
                                 style={{ marginVertical:10, height:30, padding: 5, borderColor: '#008000', borderWidth:1,borderRadius:3,backgroundColor:'white', color:'black'}}
                                 autoCapitalize="none"
                             onChangeText={(text) => this.setState({ prix:text })} value={this.state.prix}
@@ -449,45 +425,21 @@ const key=user_name
       <TouchableOpacity  onPress={()=> this.findNewImageGallery()}  style={styles.panelButton1} >
         <Text style={styles.panelButtonTitle}>Select From Gallery</Text>
       </TouchableOpacity>
-   
+
     </View>
    
         </RBSheet>
 
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                        <Image source={{uri : this.state.uri}}
-                                   style={{marginTop:10,resizeMode:'cover', width:50,height:50}}/>
+                        <Image source={{uri : this.state.uri}} style={{marginTop:10,resizeMode:'cover', width:50,height:50}}/>
                     </View>
                
 
                     <View style={{margin:10}}>
 
-                    <TouchableOpacity onPress={()=> this.uploadPublish()}
-                                              style={{alignSelf:'center', width:"100%",marginHorizontal:'auto',  backgroundColor:"#008000", borderRadius:5,paddingVertical:10, paddingHorizontal:20,marginBottom:20}}>
+                    <TouchableOpacity onPress={()=> this.uploadPublish()}style={{alignSelf:'center', width:"100%",marginHorizontal:'auto',  backgroundColor:"#008000", borderRadius:5,paddingVertical:10, paddingHorizontal:20,marginBottom:20}}>
                                 <Text style={{textAlign:'center', color:'white'}}>Upload & Publish</Text>
-                            </TouchableOpacity>
-</View>
+                    </TouchableOpacity>
+       </View>
           </ScrollView>
             </View>
         );
@@ -537,43 +489,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "700"
     },
-    la: {
-        marginHorizontal: 16
-    },
-    labseniItem: {
-        backgroundColor: "#FFF",
-        borderRadius: 5,
-        padding: 8,
-        flexDirection: "row",
-        marginVertical: 8
-    },
-    avatar: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
-        marginRight: 16
-    },
-    name: {
-        fontSize: 15,
-        fontWeight: "500",
-        color: "#454D65"
-    },
-    timestamp: {
-        fontSize: 11,
-        color: "#C4C6CE",
-        marginTop: 4
-    },
-    post: {
-        marginTop: 16,
-        fontSize: 14,
-        color: "#838899"
-    },
-    postImage: {
-        width: undefined,
-        height: 150,
-        borderRadius: 5,
-        marginVertical: 16
-    },
+   
     textDesign:{
         fontWeight:"600",fontSize:13,marginBottom:10
     },

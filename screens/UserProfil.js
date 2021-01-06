@@ -16,7 +16,6 @@ export default class UserProfil extends React.Component {
 
     }
 
- 
     checkParams = () => {
         var params = this.props.navigation.state.params;
         if (params) {

@@ -3,7 +3,8 @@ import {View, Text, TextInput, KeyboardAvoidingView, StyleSheet,TouchableHighlig
 import {f, auth, database, storage} from "../config/config.js"
 import { AntDesign } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons';
-
+import {LogBox} from 'react-native';
+LogBox.ignoreAllLogs();
 export default class CommentsScreen extends React.Component {
 
     constructor(props) {
@@ -21,14 +22,6 @@ export default class CommentsScreen extends React.Component {
    
    
 
-    checkParams = () => {
-        //var params = this.props.navigation.state.params;
-        //const { navigation } = this.props;  
-
-
-
-    };
-
     addCommentToList = (comments_list, data, comment) => {
         var that = this;
         var commentObj = data[comment];
@@ -43,7 +36,6 @@ export default class CommentsScreen extends React.Component {
                 author: data.username,
                 authorId: commentObj.author,
                 authorAvatar: data.avatar,
-
             });
 
             that.setState({
@@ -53,7 +45,6 @@ export default class CommentsScreen extends React.Component {
 
 
         }).catch(error => console.log(error));
-
 
     };
 
@@ -232,27 +223,23 @@ export default class CommentsScreen extends React.Component {
 
     render() {
         return (
-<View>
-<View style={{ flexDirection: "row" ,marginTop:10,}}>
+           <View>
+            <View style={{ flexDirection: "row" ,marginTop:10,}}>
 
-<TextInput
-// editable={false}
-placeholder={' Enter comment'}
-onChangeText={(text) => this.setState({comment: text})}
-
-style={{marginVertical:10,height:30, padding:5, borderColor:'grey', borderTopLeftRadius:5,borderBottomLeftRadius:5, backgroundColor:'#EFEFEF',width:'85%'}}
-/>
-<TouchableOpacity onPress={() =>this.postComment()}
-                       style={{marginVertical:10,height:30, padding:5, borderColor:'grey', backgroundColor:'#EFEFEF',borderTopRightRadius:5,borderBottomRightRadius:5,}}
-
->
-<Feather name="send" size={20} color="#73788B" />
-</TouchableOpacity>
-</View>
+              <TextInput
+              placeholder={' Enter comment'}
+              onChangeText={(text) => this.setState({comment: text})}
+              style={{marginVertical:10,height:30, padding:5, borderColor:'grey', borderTopLeftRadius:5,borderBottomLeftRadius:5, backgroundColor:'#EFEFEF',width:'85%'}}
+                 />
+                <TouchableOpacity onPress={() =>this.postComment()}
+                 style={{marginVertical:10,height:30, padding:5, borderColor:'grey', backgroundColor:'#EFEFEF',borderTopRightRadius:5,borderBottomRightRadius:5,}}
+                   >
+              <Feather name="send" size={20} color="#73788B" /> 
+              </TouchableOpacity>
+           </View>
           <FlatList
             style={styles.root}
             data={this.state.comments_list}
-            //extraData={this.state}
             ItemSeparatorComponent={() => {
               return (
                 <View style={styles.separator}/>

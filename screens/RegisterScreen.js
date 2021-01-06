@@ -6,6 +6,9 @@ import * as ImagePicker from "expo-image-picker";
 import Fire from "../Fire";
 import {f, auth, database, storage} from "../config/config.js"
 import { ScrollView } from "react-native-gesture-handler";
+import * as Permissions from 'expo-permissions';
+import {LogBox} from 'react-native';
+  LogBox.ignoreAllLogs();
 
 
 export default class RegisterScreen extends React.Component {
@@ -74,14 +77,10 @@ export default class RegisterScreen extends React.Component {
         var  specialite=this.state.specialite;
         var  adresse=this.state.adresse;
         var  type=this.state.type;
-
         const { navigation } = this.props;  
 
         const user_name = navigation.getParam("value");
-
         if (email != '' && password != '' && user_name =="doctor" ) {
-
-
 
             try {
                 let user = await auth.createUserWithEmailAndPassword(email, password)
@@ -126,32 +125,87 @@ export default class RegisterScreen extends React.Component {
             aspect: [4, 3]
         });
 
-       
-
         if (!result.cancelled) {
             this.setState({...this.state.avatar, avatar: result.uri});
         }
 
-
-
-
-
-
-
     };
-
-    uniqueId = () => {
-        return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
-            this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-'
-    };
-
-
 
    
 
 
 
+    findNewImageCamera = async()=> {
 
+        this._checkPermissions();
+
+        let result = await ImagePicker.launchCameraAsync({
+            mediaTypes: 'Images',
+            allowsEditing: true,
+            quality: 1, 
+             aspect: [4, 3]
+
+        });
+        console.log(result);
+
+        if (!result.cancelled) {
+            console.log('upload image');
+            // this.uploadImage(result.uri);
+            this.setState(
+                {...this.state.avatar, avatar: result.uri}
+
+           )
+
+        } 
+
+    };
+    findNewImageGallery = async()=> {
+
+        this._checkPermissions();
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: 'Images',
+            allowsEditing: true,
+            quality: 1,
+            aspect: [4, 3]
+        });
+        console.log(result);
+
+        if (!result.cancelled) {
+            console.log('upload image');
+            // this.uploadImage(result.uri);
+            this.setState(
+                {avatar: result.uri}
+            )
+
+        } 
+
+        
+
+    };
+
+    _checkPermissions = async() => {
+        const {status} = await Permissions.askAsync(Permissions.CAMERA);
+        this.setState({camera: status});
+
+        const {statusRoll} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        this.setState({cameraRoll: statusRoll});
+
+
+    };
+
+    s4 = () => {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+
+    };
+
+
+    uniqueId = () => {
+        return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
+            this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-'
+    };
 
 
 
@@ -167,13 +221,8 @@ export default class RegisterScreen extends React.Component {
         return (
             
             <View style={styles.container}>
-
-
-
-
                 <View style={{ position: "absolute", top: 5, alignItems: "center", width: "100%" }}>
-
-                    <TouchableOpacity style={styles.avatarPlaceholder} onPress={this.handlePickAvatar}>
+                    <TouchableOpacity style={styles.avatarPlaceholder} onPress={()=>this.findNewImageGallery} >
                         <Image source={{ uri: this.state.avatar }} style={styles.avatar}/>
                         <Ionicons
                             name="ios-add"
@@ -183,28 +232,15 @@ export default class RegisterScreen extends React.Component {
                         ></Ionicons>
                     </TouchableOpacity>
                 </View>
-
                 <View style={styles.errorMessage}>
                     {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
                 </View>
-
-
-
-
-
-
-
 
                 <ScrollView>
 
                 { 
             user_name=="doctor"?
-
-
                 <View style={styles.form}>
-                    
-                 
-
                     <View>
                         <Text style={{  color: "#8A8F9E",  fontSize: 10, textTransform: "uppercase",marginTop:90}}>Full Name</Text>
                         <TextInput
@@ -250,9 +286,6 @@ export default class RegisterScreen extends React.Component {
                             ></TextInput>
                         </View>
 
-
-
-
                     <View style={{ marginTop: 32 }}>
                         <Text style={styles.inputTitle}>Email Address</Text>
                         <TextInput
@@ -275,22 +308,9 @@ export default class RegisterScreen extends React.Component {
                     </View>
                 </View>
 
+                      :
 
-
-
-
-:
-
-
-
-
-
-
-
-
-
-
-                <View style={styles.form}>
+              <View style={styles.form}>
                     <View>
                         <Text style={styles.inputTitle}>Full Name</Text>
                         <TextInput
@@ -341,32 +361,10 @@ export default class RegisterScreen extends React.Component {
                 </View>
 
 
-
-
                 }
 
 
-</ScrollView>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          </ScrollView>
 
 
                 <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
@@ -391,18 +389,8 @@ const styles = StyleSheet.create({
 
 
     },
-    greeting: {
-        marginTop: 25,
-        fontSize: 18,
-        fontWeight: "400",
-        textAlign: "center"
-    },
-    errorMessageee: {
-        height: 72,
-        alignItems: "center",
-        justifyContent: "center",
-        marginHorizontal: 30
-    },
+ 
+   
     form: {
         marginTop: 85,
         marginBottom: 38,
@@ -455,24 +443,3 @@ const styles = StyleSheet.create({
 
 });
 
-
-// import React from "react";
-// import { View, Text, StyleSheet } from "react-native";
-//
-// export default class RegisterScreen extends React.Component {
-//     render() {
-//         return (
-//             <View style={styles.container}>
-//                 <Text>register Screen</Text>
-//             </View>
-//         );
-//     }
-// }
-//
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         alignItems: "center",
-//         justifyContent: "center"
-//     }
-// });

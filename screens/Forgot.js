@@ -3,21 +3,14 @@ import { StyleSheet, View, Text, TextInput, Image, Alert,TouchableOpacity,Status
 
 import { NavigationActions } from 'react-navigation';
 import * as firebase from 'firebase';
-
-
-
-
+import {LogBox} from 'react-native';
+LogBox.ignoreAllLogs();
 
 
 export default class Forgot extends React.Component {
     static navigationOptions = {
         headerShown: false
     };
-
-
-
-
-
 
     constructor(props) {
         super(props);
@@ -28,12 +21,6 @@ export default class Forgot extends React.Component {
             errorMessage: null
         };
     }
-
-
-
-
-
-
 
 
 
@@ -80,9 +67,6 @@ export default class Forgot extends React.Component {
                 />
 
 
-                
-
-                
                 <TouchableOpacity style={styles.button} onPress={()=> this.onResetPasswordPress}>
                     <Text style={{ color: "#FFF", fontWeight: "500" }}>Get your new password</Text>
                 </TouchableOpacity>
@@ -113,13 +97,6 @@ const styles = StyleSheet.create({
 
     }},
 
-    
-    greeting: {
-        marginTop: -32,
-        fontSize: 18,
-        fontWeight: "400",
-        textAlign: "center"
-    },
     headerTitle: {
         fontWeight: 'Bold',
         fontSize: 20,
@@ -149,11 +126,5 @@ const styles = StyleSheet.create({
         justifyContent: "center"
       },
 
-    text: {
-        marginHorizontal: 30,
-        height: 52,
-        alignItems: "center",
-        justifyContent: "center",
-        marginBottom:30
-    }
+  
 });

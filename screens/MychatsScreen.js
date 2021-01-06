@@ -6,7 +6,8 @@ import { NavigationActions } from 'react-navigation';
 import * as firebase from 'firebase';
 import {f, auth, database, storage} from "../config/config.js"
 import { SearchBar,Avatar, Badge, Icon, withBadge } from 'react-native-elements';
-
+import {LogBox} from 'react-native';
+LogBox.ignoreAllLogs();
 
 export default class MychatsScreen extends React.Component {
   
@@ -14,7 +15,6 @@ export default class MychatsScreen extends React.Component {
     constructor() {
       super();
       this.state = {
-        
         dataSource: [],
         loaded: false,
         phoneNumber:"",
@@ -24,7 +24,7 @@ export default class MychatsScreen extends React.Component {
       };
     }
   
-  
+
                      componentDidMount(){
                         this.props.navigation.setParams({ logout: this._logout });
                         const userid=f.auth().currentUser.uid
@@ -32,14 +32,12 @@ export default class MychatsScreen extends React.Component {
                         var data = []
                         snapshot.forEach((child)=>{
                          
-                               data.push({
-                                key: child.key,
+                              data.push({
+                             key: child.key,
                              uid:child.val().uid,
                              image:child.val().image,  
-                              username:child.val().username,
-                              name:child.val().name,
-
-  
+                             username:child.val().username,
+                             name:child.val().name,
                                 })
                                 
                               
@@ -55,14 +53,12 @@ export default class MychatsScreen extends React.Component {
 
 
     goToChat=(uid,name,image,username)=>{
-      //const { phoneNumber } = this.state
       this.props.navigation.navigate('Chat', {uid: uid,
         name: name,
         image:image,
         username:username
            
       })
-  //alert(id)
    
     }
 
@@ -70,19 +66,11 @@ export default class MychatsScreen extends React.Component {
         return {
             headerShown:false,
 
-          headerRight: (
-            <TouchableOpacity onPress={navigation.getParam('logout')}>
-               <AntDesign name="close" size={25} color="#73788B"  />
-            </TouchableOpacity>
-          )
+         
         };
       };
 
-    _logout = () => {
-        this.props.navigation.navigate('Profile');
-      }
-    
-
+ 
       filterItem = (search) =>  {
         // var search = this.state.search ;
          this.setState({
@@ -115,34 +103,24 @@ export default class MychatsScreen extends React.Component {
                     <Text style={styles.headerTitle}>My chats </Text>
                     <TouchableOpacity  style={styles.headerTitle} onPress={()=>this.props.navigation.navigate('Animal')}>
                     <AntDesign name="close" size={25} color="#73788B"  />
-
                     </TouchableOpacity>
                     </View>
-
-
-
                     <SearchBar
         placeholder="Type doctor name"
         onChangeText={this.filterItem}
         value={search}
      
       />
-
-
-
-                    <FlatList
+                  <FlatList
                        data={this.state.dataSource}
-                       
                         keyExtractor={(item,index) =>index.toString()}
                         style={{flex:1, backgroundColor:'#fff'}}
                         renderItem={({item, index}) => (
                         <View key={index} style={{width:'100%', overflow:'hidden', marginBottom:5, justifyContent:'space-between', borderBottomWidth:1, borderColor:'grey',height:120}}>
                        <View style={{height: 10, width: '100%', backgroundColor: '#e5e5e5'}} />
                         <View style={{padding:5,width: '100%',flexDirection:'row', justifyContent: 'space-between'}}>
-                             
-                      
-                                <View style={{padding:20,paddingRight:80,width: '100%',flexDirection:"row"}}>
-                                <Image
+                         <View style={{padding:20,paddingRight:80,width: '100%',flexDirection:"row"}}>
+                         <Image
                            source={
                            item.image
                             ? { uri: item.image }
@@ -152,36 +130,17 @@ export default class MychatsScreen extends React.Component {
                                 />
 
                               <TouchableOpacity  onPress={()=> this.goToChat(item.key,item.name,item.image,item.username)}>
-                  
                               <Text style={{marginTop:25,marginLeft:20}}>{item.username}  {item.name} </Text>
 
-              </TouchableOpacity>
+                              </TouchableOpacity>
 
-                             </View>
+                              </View>
                           </View>
                     
                      </View>
                        
                         )}
                     />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
             </View>

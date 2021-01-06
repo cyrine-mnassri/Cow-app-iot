@@ -12,7 +12,8 @@ import { StackNavigator } from "react-navigation";
 import { GiftedChat } from "react-native-gifted-chat";
 import {f, auth, database, storage} from "../config/config.js"
 import { AntDesign } from '@expo/vector-icons'; 
-
+import {LogBox} from 'react-native';
+LogBox.ignoreAllLogs();
 var name, uid;
 
 export default class ChatScreen extends Component {
@@ -194,7 +195,7 @@ checkParams = () => {
 };
 
 
-  database.ref('users').child(this.user.uid+"/mychats/"+uid).set(uObj);
+ database.ref('users').child(this.user.uid+"/mychats/"+uid).set(uObj);
  database.ref('users').child(`${uid}`+"/mychats/"+this.user.uid).set(uObj1);
 
   //database.ref('doctors').child(this.user.uid+"/mychats/"+uid).set(uObj);
