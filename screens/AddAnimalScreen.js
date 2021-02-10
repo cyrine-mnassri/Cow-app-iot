@@ -23,7 +23,7 @@ export default class AddAnimalScreen extends React.Component {
            animalweight:'',
            animalbirth:'',
            animalbreed:'',
-           animalhealth:'',
+          // animalhealth:'',
             progress: 0,
             visibility: false,
             DateDisplay:""
@@ -136,8 +136,7 @@ export default class AddAnimalScreen extends React.Component {
                 imageSelected: true,
                 imageId: this.uniqueId(),
                 uri: result.uri,
-                uri1: result.uri1,
-                uri2: result.uri2,
+              
 
             })
 
@@ -151,18 +150,19 @@ export default class AddAnimalScreen extends React.Component {
 
     };
     uploadPublish = () => {
-        if (this.state.uploading == false) {
-            if (this.state.animalweight != '' && this.state.animalreference != '' ) {
-                this.uploadImage(this.state.uri);
+      if (this.state.uploading == false) {
+          if (this.state.animalweight != ''  ) {
+              this.uploadImage(this.state.uri);
 
-            } else {
-                alert('enter all informations');
-            }
-        } else {
-            console.log('ignore button')
-        }
+          } else {
+              alert('enter all informations');
+          }
+      } else {
+          console.log('ignore button')
+      }
 
-    };
+  };
+
 
     uploadImage = async(uri)=> {
         var that = this;
@@ -214,9 +214,9 @@ export default class AddAnimalScreen extends React.Component {
         var animaltype = this.state.animaltype;
         var animalreference = user_name;
         var animalweight = this.state.animalweight;  
-        var animalbirth = this.state.animalbirth; 
+        var animalbirth = this.state.DateDisplay; 
         var animalbreed = this.state.animalbreed;
-        var animalhealth = this.state.animalhealth;
+       // var animalhealth = this.state.animalhealth;
        
 
 
@@ -232,7 +232,7 @@ export default class AddAnimalScreen extends React.Component {
          animalweight: animalweight,
          animalbirth :animalbirth, 
          animalbreed :animalbreed,
-         animalhealth :animalhealth,
+        // animalhealth :animalhealth,
          posted: timestamp,
           url: imageUrl
 
@@ -252,7 +252,7 @@ export default class AddAnimalScreen extends React.Component {
             animalweight: '',
             animalbirth :'', 
             animalbreed :'',
-            animalhealth :'',
+          //  animalhealth :'',
             uri:''
 
 
@@ -406,18 +406,7 @@ export default class AddAnimalScreen extends React.Component {
 
 
 
-<Text style={styles.textDesign} >Current Health-state</Text>
-<View style={{flexDirection:"row",justifyContent:"flex-start"}}>
-   <AntDesign style={{marginTop:20}} name="caretdown" size={12} color="#008000" ></AntDesign>
-            < Picker style={{width:'100%',backgroundColor:"#FFFFFF"}}
-              selectedValue={this.state.animalhealth}
-              onValueChange={(itemValue, itemIndex) =>
-                this.setState({ animalhealth: itemValue })
-              }>
-              <Picker.Item label="healthy" value="healthy" />
-              <Picker.Item label="sick" value="sick" />
-            </Picker>
-            </View>
+
             <View style={{flexDirection:"row"}}>
               <TouchableOpacity  onPress={() => this.RBSheet.open()}  style={{ marginTop:10,resizeMode:'cover',backgroundColor:"#008000" ,width:50,height:50,borderRadius:10,alignContent:"center",justifyContent:"center",alignItems:"center" ,marginRight:10}}  >
                <Ionicons name="md-camera" size={40} color="#FFFFFF"></Ionicons>

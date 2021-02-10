@@ -59,8 +59,7 @@ import { SearchBar,Avatar, Badge, Icon, withBadge } from 'react-native-elements'
         if (isUser == true) {
             this.loadFeed(userId);
         } else {
-            this.
-            loadFeed('')
+            this.loadFeed('')
         }
 
     
@@ -132,6 +131,7 @@ import { SearchBar,Avatar, Badge, Icon, withBadge } from 'react-native-elements'
           const exists = (snapshot.val() !== null);
             if (exists) data = snapshot.val();
             photo_feed.push({
+
                 id: photo,
                 url: photoObjt.url,
                 img: photoObjt.img,
@@ -184,14 +184,28 @@ import { SearchBar,Avatar, Badge, Icon, withBadge } from 'react-native-elements'
         this.loadFeed();
     };
 
-    del = (id1,id) =>{
-          let ttest = database.ref('shopsphotos').child(id);
-          ttest.remove();
-          alert('Bien Supprimer');
-    
+    del = (id) =>{
+      var query = database.ref('shopsphotos').child(id)
+      query.remove()
+        alert(id)
+        
+        const {isUser, userId}= this.props;
+          if (isUser == true) {
+              this.loadFeed(userId);
+          } else {
+              this.loadFeed('')
+          }
+
    
    } ;
 
+
+   gotoEdit=(id)=>{
+    //function to make two option alert
+   // alert(` ${id} `);
+    this.props.navigation.navigate('UpdatePost', {photoId: id})
+  }
+   
 
       s4 = () => {
         return Math.floor((1 + Math.random()) * 0x10000)
@@ -340,10 +354,12 @@ import { SearchBar,Avatar, Badge, Icon, withBadge } from 'react-native-elements'
                            </View>
                            <View  >
                          
+                           {this.state.idididuser == item.authorId &&
 
                          <TouchableOpacity   onPress={() => this.RBSheet.open()} >
                          <Feather name="more-vertical" size={20} color="#000000"/>
                          </TouchableOpacity>
+                        }
                          {this.state.idididuser == item.authorId &&
 
         <RBSheet
@@ -371,9 +387,9 @@ import { SearchBar,Avatar, Badge, Icon, withBadge } from 'react-native-elements'
 
       </View>
       <TouchableOpacity style={styles.panelButton}>
-        <Text style={styles.panelButtonTitle}>UpdatePost</Text>
+        <Text style={styles.panelButtonTitle}  onPress={()=> this.gotoEdit(item.id)} >UpdatePost</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.panelButton1} >
+      <TouchableOpacity onPress={()=> this.del(item.id)}style={styles.panelButton1} >
         <Text style={styles.panelButtonTitle}>DeletePost</Text>
       </TouchableOpacity>
    
@@ -387,14 +403,28 @@ import { SearchBar,Avatar, Badge, Icon, withBadge } from 'react-native-elements'
 
                              <Text style={styles.post1}>{item.prix} DT</Text>
                             <Image source={{uri:item.url}} style={styles.postImage} resizeMode="cover"/>
+                         
+                            { 
+               item.switchValue==false?  // if has image
+               <View style={{height:30,backgroundColor:"red",width:100,justifyContent:"center",alignItems:"center",borderRadius:10}}>
+               <Text style={{color:"#FFFFFF"}}>Not available</Text>
+               </View>
+               :
+               <View style={{height:30,backgroundColor:"#00ff00",width:100,justifyContent:"center",alignItems:"center",borderRadius:10}}>
+
+               <Text style={{color:"#fff"}}>available </Text>
+               </View>
+             }
+
                            <Text style={styles.post2}>Description</Text>
 
                            <Text style={styles.post}>{item.caption}</Text>
-                           <TouchableOpacity  onPress={()=> this.goToDetails(item.id)}>
-                           <Text style={styles.post3}>more details...</Text>
-   </TouchableOpacity>
+                 
 
 
+
+
+           
 
                            <View style={{height: 1,marginTop:10, width:undefined, backgroundColor: '#ABB2B9',marginLeft:20,marginRight:20}} />
 
@@ -404,13 +434,7 @@ import { SearchBar,Avatar, Badge, Icon, withBadge } from 'react-native-elements'
 
 
 
-                           {this.state.idididuser != item.authorId &&
-
-<TouchableOpacity onPress={()=> this.achterco()}
-                     >
-    <AntDesign name="shoppingcart" size={20} color="#2E4053"/>
-   </TouchableOpacity>
-    }
+ 
                             <TouchableOpacity  onPress={()=> this.goToComment(item.id)}  >
 
                              <FontAwesome name="comment-o" size={20} color="#2E4053"/>
@@ -418,12 +442,7 @@ import { SearchBar,Avatar, Badge, Icon, withBadge } from 'react-native-elements'
 
                            </TouchableOpacity>
 
-                           <TouchableOpacity  >
-
-<AntDesign name="like2" size={20} color="#2E4053"/>
-
-
-</TouchableOpacity>
+             
                            
                              </View>
                          

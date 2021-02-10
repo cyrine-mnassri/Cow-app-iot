@@ -58,7 +58,6 @@ export default class AnimalScreen extends React.Component {
           snapshot.forEach((child)=>{
            data.push({
             key: child.key,
-            animalhealth:child.val().animalhealth,
             animalreference:child.val().animalreference,
             animaltype:child.val().animaltype,
             animalbreed:child.val().animalbreed,
@@ -132,16 +131,19 @@ export default class AnimalScreen extends React.Component {
       
        }
        del = (id1) =>{
-
         const userid=f.auth().currentUser.uid
       
        var query = database.ref('users').child(userid).child(`photos/${id1}`)
         query.on('child_added', function(snapshot)
         {
           snapshot.ref.remove();
+
        });
-      
          
+
+
+
+
       
       
       } ;
@@ -189,18 +191,7 @@ export default class AnimalScreen extends React.Component {
                   
                   
                  }}>
-                    <View style={{marginRight:10}}>
-
-                    <TouchableOpacity  onPress={()=> this.props.navigation.navigate("Login")} >
-                    <Ionicons   name="notifications" size={25} color="#C0C0C0" />
-                    </TouchableOpacity>
-
-                    <Badge
-                     value="5"
-                     status="error"
-                     containerStyle={{ position: 'absolute', top: -5, right: -2 }}
-                        />
-               </View>
+                  
 <View>
 
                     <TouchableOpacity  onPress={()=> this.props.navigation.navigate("Mychats")} >
@@ -223,6 +214,15 @@ export default class AnimalScreen extends React.Component {
         value={search}
      
       />
+
+
+
+
+
+
+
+
+
       <View  style={{flexDirection:"row",justifyContent:"space-between",marginHorizontal:7,marginTop:15,marginBottom:15}}> 
       <Text style={{fontSize:15,fontWeight:"600",marginTop:5,color:"#2F4F4F"}}>  New Cattle  </Text>
        <TouchableOpacity style={{marginRight:15,marginTop:2}} onPress={()=> this.props.navigation.navigate("AddAnimalScreen")} >
@@ -248,19 +248,7 @@ export default class AnimalScreen extends React.Component {
                         <Image source={{uri:item.url}} style={styles.postImage} resizeMode="cover"/>
 
                         <View style={{flexDirection:"row",justifyContent:"space-between"}}>
-                         <Text style={{marginTop:10}}>Current health state</Text>
-                 { 
-               item.animalhealth=="sick"?  // if has image
-               <View style={{height:30,backgroundColor:"#FF4500",width:70,justifyContent:"center",alignItems:"center",borderRadius:14}}>
-               <Text style={{color:"#FFFFFF"}}>{item.animalhealth}</Text>
-               </View>
-               :
-               <View style={{height:30,backgroundColor:"#00ff00",width:70,justifyContent:"center",alignItems:"center",borderRadius:14}}>
-
-               <Text style={{color:"#fff"}}>{item.animalhealth}</Text>
-               </View>
-             }
-
+         
                 </View>
                            <View style={{ flexDirection:"row-reverse",marginTop:20,alignItems:"flex-end"}}>
                             <TouchableOpacity style={{marginRight:20}} onPress={()=> this.delete(item.key)} >

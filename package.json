@@ -37,6 +37,7 @@
     "react-native-calendars": "^1.403.0",
     "react-native-camera": "^3.40.0",
     "react-native-datepicker": "^1.7.2",
+    "react-native-dynamic-search-bar": "^2.0.0",
     "react-native-dynamic-vector-icons": "^0.1.1",
     "react-native-elements": "^3.0.0-alpha.1",
     "react-native-flatlist-slider": "^1.0.5",

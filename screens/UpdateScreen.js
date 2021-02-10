@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, Text, TextInput, Image, Alert,TouchableOpacity,StatusBar,TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Image, Alert,TouchableOpacity,StatusBar,TouchableHighlight,Switch } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; 
+import {f, auth, database, storage} from "../config/config.js"
 
 import { NavigationActions } from 'react-navigation';
 import * as firebase from 'firebase';
@@ -10,7 +11,8 @@ export default class UpdateScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-           
+          switchValue: false,
+
         };
     }
 
@@ -30,6 +32,12 @@ export default class UpdateScreen extends React.Component {
         this.props.navigation.navigate('shops');
       }
     
+      toggleSwitch = value => {
+        //onValueChange of the switch this function will be called
+        this.setState({ switchValue: value });
+        //state changes according to switch
+        //which will result in re-render the text
+      };
 
 
     componentDidMount = ()=> {
@@ -38,18 +46,44 @@ export default class UpdateScreen extends React.Component {
         const { navigation } = this.props;  
 
         const   user_name = navigation.getParam('photoId','');
-             
 
 
+
+      
+  
+          database.ref('shopsphotos').child(user_name).on('value', (snapshot) =>{
+      
+         this.setState({ 
+          
+          prix :snapshot.val().prix,
+          switchValue: snapshot.val().switchValue,
+       
+  
+          })
+        })
+   
+  
+  
+
+
+
+
+  
     };
 
   
 
     render() {
+      const { navigation } = this.props;  
+
+      const   user_name = navigation.getParam('photoId','');
         return (
             <View style={styles.container}>
-      <Text> hi</Text>
-    
+   <Switch
+                      onValueChange={this.toggleSwitch}
+                     value={this.state.switchValue}
+                        />    
+           
             </View>
         );
     }

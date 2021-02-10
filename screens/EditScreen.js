@@ -66,7 +66,6 @@ export default class EditScreen  extends React.Component {
        this.setState({
        
         
-        animaltype : snapshot.val().animaltype,
         animalreference :snapshot.val().animalreference,
         animalweight: snapshot.val().animalweight,
         animalbirth :snapshot.val().animalbirth, 
@@ -92,7 +91,6 @@ export default class EditScreen  extends React.Component {
 savecowupdates = () =>{
         var animalhealth = this.state.animalhealth;
         var animalreference = this.state.animalreference;
-        var animaltype = this.state.animaltype;
         var animalweight = this.state.animalweight;
         var animalbreed = this.state.animalbreed;
         var posted = this.state.posted;
@@ -107,13 +105,13 @@ savecowupdates = () =>{
        const user_name = navigation.getParam('value','');  
       const key= user_name
 
-      database.ref('users').child(userid).child(`photos/${key}`).child('animalbirth').set(animalbirth);
+     // database.ref('users').child(userid).child(`photos/${key}`).child('animalbirth').set(animalbirth);
 
-            database.ref('users').child(userid).child(`photos/${key}`).child('animalhealth').set(animalhealth);
+         //   database.ref('users').child(userid).child(`photos/${key}`).child('animalhealth').set(animalhealth);
 
-            database.ref('users').child(userid).child(`photos/${key}`).child('animalreference').set(animalreference);
+          //  database.ref('users').child(userid).child(`photos/${key}`).child('animalreference').set(animalreference);
 
-            database.ref('users').child(userid).child(`photos/${key}`).child('animaltype').set(animaltype);
+          //  database.ref('users').child(userid).child(`photos/${key}`).child('animaltype').set(animaltype);
 
             database.ref('users').child(userid).child(`photos/${key}`).child('animalweight').set(animalweight);
 
@@ -193,19 +191,7 @@ savecowupdates = () =>{
 
 
 
-<Text style={{color:"#808080",marginBottom:10,marginTop:10,width:'100%'}}>Current Health-state</Text>
 
-
-            < Picker style={{width:'100%',backgroundColor:"#FFFFFF"}}
-              selectedValue={this.state.animalhealth}
-              onValueChange={(itemValue, itemIndex) =>
-                this.setState({ animalhealth: itemValue })
-              }>
-              <Picker.Item label="healthy" value="healthy" />
-              <Picker.Item label="sick" value="sick" />
-            
-
-            </Picker>
 
                    <TouchableOpacity style={{backgroundColor:'#008000', padding:10,textAlign:'center',borderRadius:3, marginTop: 130}}
                                     onPress={() => this.savecowupdates()}>

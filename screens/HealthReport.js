@@ -7,6 +7,9 @@
   import Swiper from 'react-native-swiper';
   import { AntDesign } from '@expo/vector-icons'; 
   import {LogBox} from 'react-native';
+  import {f, auth, database, storage} from "../config/config.js"
+  import { Ionicons,FontAwesome5 } from "@expo/vector-icons";
+
   LogBox.ignoreAllLogs();
   
   
@@ -15,7 +18,8 @@
       constructor(props) {
           super(props);
           this.state = {
-             
+            loaded: false
+
           };
       }
   
@@ -27,7 +31,7 @@
            
           };
         };
-  
+     
       
       componentDidMount = ()=> {
   
@@ -35,6 +39,22 @@
   
           const   idphoto = navigation.getParam('id');
           const   reference = navigation.getParam('reference');
+          var that = this;
+
+  
+          database.ref('sensors').child(reference).once('value').then(function (snapshot) {
+       
+            that.setState({
+              latestTemperature: snapshot.val().latestTemperature,
+
+            })
+        });
+   
+
+
+
+
+
 
   
   
@@ -54,8 +74,52 @@
                     </TouchableOpacity>
                     </View>       
 <View>
-<Text>{idphoto}</Text>
-<Text>{reference}</Text>
+
+{ 
+              (this.state.latestTemperature)?  // if has image
+
+               <View style={{ marginTop:100,marginLeft:30,height:200,backgroundColor:"#000",width:250,justifyContent:"center",alignItems:"center",borderRadius:8}}>
+                   <FontAwesome5  style={{marginBottom:20}} name="temperature-low" size={30} color={'#FFFFFF'} />
+                    <Text style={{color:"#FFFFFF",marginBottom:20}}>Your cattle temperature is very good</Text>
+
+               <Text style={{color:"#FFFFFF"}}>{this.state.latestTemperature}°C</Text>
+
+               </View>
+               :
+               <View >
+
+               </View>
+             }
+{ 
+              37<+(this.state.latestTemperature)>39?  // if has image
+               <View style={{height:30,backgroundColor:"#00ff00",width:70,justifyContent:"center",alignItems:"center",borderRadius:14}}>
+                              <Text style={{color:"#FFFFFF"}}>Your cattle temperature is very good</Text>
+
+               <Text style={{color:"#FFFFFF"}}>{this.state.latestTemperature}</Text>
+
+
+
+
+               </View>
+               :
+               <View >
+
+               </View>
+             }
+
+{ 
+              +(this.state.latestTemperature)>42?  // if has image
+               <View style={{height:30,backgroundColor:"#FF4500",width:70,justifyContent:"center",alignItems:"center",borderRadius:14}}>
+               <Text style={{color:"#FFFFFF"}}>{this.state.latestTemperature}</Text>
+               </View>
+               :
+               <View >
+
+               </View>
+             }
+
+
+
 
 </View>
 
@@ -63,10 +127,12 @@
   
   
   const styles = StyleSheet.create({
+    
     container: {
       flex: 1,
       backgroundColor: "#EBECF4"
   },
+
   header: {
       paddingTop:40,
       paddingBottom: 16,

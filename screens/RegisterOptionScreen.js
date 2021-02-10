@@ -3,7 +3,6 @@ import {StyleSheet, Text, TextInput, View, TouchableOpacity, Image, StatusBar} f
 import {Ionicons} from "@expo/vector-icons";
 import UserPermissions from "../utilies/UserPermissions";
 import * as ImagePicker from "expo-image-picker";
-import Fire from "../Fire";
 import {f, auth, database, storage} from "../config/config.js"
 
 

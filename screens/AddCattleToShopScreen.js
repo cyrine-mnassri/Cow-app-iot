@@ -89,12 +89,13 @@ export default class AddCattleToShopScreen extends React.Component {
 
       uploadPublish = () => {
         if (this.state.uploading == false) {
-            if ((this.state.caption != '') && (this.state.prix!='')&& (this.state.switchValue!='')){
+            if ((this.state.caption != '') && (this.state.prix!='')){
             this.uploadImage(this.state.uri);
                // alert('ok');
 
-            } else {
-                alert('Enter all informations ');
+            } 
+            else {
+            alert('Enter all informations ');
             }
         } else {
             console.log('ignore button')
@@ -103,7 +104,6 @@ export default class AddCattleToShopScreen extends React.Component {
     };
 
     findNewImageCamera = async()=> {
-
         this._checkPermissions();
 
         let result = await ImagePicker.launchCameraAsync({
@@ -151,8 +151,7 @@ export default class AddCattleToShopScreen extends React.Component {
                 imageSelected: true,
                 imageId: this.uniqueId(),
                 uri: result.uri,
-                uri1: result.uri1,
-                uri2: result.uri2,
+              
 
             })
 
@@ -214,9 +213,9 @@ export default class AddCattleToShopScreen extends React.Component {
         var userId = f.auth().currentUser.uid;
 
         var prix = this.state.prix;
-        var name = this.state.animalreference;
-        var size = this.state.animalweight;
-        var img = this.state.url;
+        var name = this.state.name;
+        var size = this.state.size;
+        var img = this.state.uri;
 
         var caption = this.state.caption;
         var switchValue=this.state.switchValue;
@@ -232,14 +231,15 @@ export default class AddCattleToShopScreen extends React.Component {
             url: imageUrl,
             name:name,
             size:size,
-            img:img,switchValue:switchValue
+            img:img,
+            switchValue:switchValue
 
         };
 
         database.ref('/shopsphotos/' + imageId).set(photoObj);
        // database.ref('/users/'+userId+'/photos/' + imageId).set(photoObj);
-        alert('Image Uploaded !!!');
-
+        alert('Cattle added to the shop list  !!!');
+        this.props.navigation.navigate('shops')
         this.setState({
             uploading: false,
             imageSelected : false,
@@ -296,7 +296,7 @@ export default class AddCattleToShopScreen extends React.Component {
             <View style={styles.container}>
             <View style={styles.header}>
                           <Text style={styles.headerTitle}>Trade  </Text>
-                          <TouchableOpacity  style={styles.headerTitle} onPress={()=>this.props.navigation.navigate('Animal')}>
+                          <TouchableOpacity  style={styles.headerTitle} onPress={()=>this.props.navigation.navigate('shops')}>
                           <AntDesign name="close" size={25} color="#73788B"  />
                           </TouchableOpacity>
                           </View>
@@ -337,8 +337,8 @@ export default class AddCattleToShopScreen extends React.Component {
                                  numberOfLines={4}
                                  style={{ marginVertical:10, height:30, padding: 5, borderColor: '#008000', borderWidth:1,borderRadius:3,backgroundColor:'white', color:'black'}}
                               
-                                 onChangeText={text => this.setState({ animalweight:text })}
-                                 value={this.state.animalweight}
+                                 onChangeText={text => this.setState({ size:text })}
+                                 value={this.state.size}
                                  />     
 
                                 
@@ -351,8 +351,8 @@ export default class AddCattleToShopScreen extends React.Component {
                                 numberOfLines={4}
                                 style={{ marginVertical:10, height:30, padding: 5, borderColor: '#008000', borderWidth:1,borderRadius:3,backgroundColor:'white', color:'black'}}
                                 
-                                onChangeText={text => this.setState({ animalbreed:text })}
-                                value={this.state.animalbreed}
+                                onChangeText={text => this.setState({ name:text })}
+                                value={this.state.name}
                             /> 
 
                           <Text style={{marginTop : 9}}> Available</Text>
