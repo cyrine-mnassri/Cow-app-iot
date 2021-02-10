@@ -340,7 +340,7 @@ import { SearchBar,Avatar, Badge, Icon, withBadge } from 'react-native-elements'
                                 </View>
                            <View style={{flexDirection:"column"}}>
 
-                          <TouchableOpacity onPress={() => this.props.navigation.navigate('userprofil',{userId: item.authorId })}   >
+                          <TouchableOpacity   >
                          <Text style={styles.name}>{item.authorname} {item.authorUsername} </Text>
                          </TouchableOpacity>
 
@@ -402,6 +402,8 @@ import { SearchBar,Avatar, Badge, Icon, withBadge } from 'react-native-elements'
 </View>
 
                              <Text style={styles.post1}>{item.prix} DT</Text>
+                             <Text style={styles.post}>{item.caption}</Text>
+
                             <Image source={{uri:item.url}} style={styles.postImage} resizeMode="cover"/>
                          
                             { 
@@ -412,13 +414,11 @@ import { SearchBar,Avatar, Badge, Icon, withBadge } from 'react-native-elements'
                :
                <View style={{height:30,backgroundColor:"#00ff00",width:100,justifyContent:"center",alignItems:"center",borderRadius:10}}>
 
-               <Text style={{color:"#fff"}}>available </Text>
+               <Text style={{color:"#fff"}}>Available </Text>
                </View>
              }
 
-                           <Text style={styles.post2}>Description</Text>
 
-                           <Text style={styles.post}>{item.caption}</Text>
                  
 
 
@@ -587,7 +587,7 @@ const styles = StyleSheet.create({
       panelButton1: {
         padding: 13,
         borderRadius: 10,
-        backgroundColor: 'red',
+        backgroundColor: '#BB0B0B',
         alignItems: 'center',
         marginVertical: 7,
       },

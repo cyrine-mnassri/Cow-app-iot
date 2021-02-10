@@ -149,6 +149,8 @@ export default class AddAnimalScreen extends React.Component {
         }
 
     };
+
+    
     uploadPublish = () => {
       if (this.state.uploading == false) {
           if (this.state.animalweight != ''  ) {

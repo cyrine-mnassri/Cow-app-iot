@@ -101,7 +101,7 @@ export default class MychatsScreen extends React.Component {
       <View style={styles.container}>
       <View style={styles.header}>
                     <Text style={styles.headerTitle}>My chats </Text>
-                    <TouchableOpacity  style={styles.headerTitle} onPress={()=>this.props.navigation.navigate('Animal')}>
+                    <TouchableOpacity  style={styles.headerTitle} onPress={()=>this.props.navigation.navigate('Profile')}>
                     <AntDesign name="close" size={25} color="#73788B"  />
                     </TouchableOpacity>
                     </View>

@@ -89,13 +89,10 @@ export default class EditScreen  extends React.Component {
 
 
 savecowupdates = () =>{
-        var animalhealth = this.state.animalhealth;
-        var animalreference = this.state.animalreference;
+ 
         var animalweight = this.state.animalweight;
         var animalbreed = this.state.animalbreed;
-        var posted = this.state.posted;
-        var url = this.state.url;
-        var animalbirth = this.state.DateDisplay;
+       
 
 
 
@@ -105,22 +102,8 @@ savecowupdates = () =>{
        const user_name = navigation.getParam('value','');  
       const key= user_name
 
-     // database.ref('users').child(userid).child(`photos/${key}`).child('animalbirth').set(animalbirth);
-
-         //   database.ref('users').child(userid).child(`photos/${key}`).child('animalhealth').set(animalhealth);
-
-          //  database.ref('users').child(userid).child(`photos/${key}`).child('animalreference').set(animalreference);
-
-          //  database.ref('users').child(userid).child(`photos/${key}`).child('animaltype').set(animaltype);
-
             database.ref('users').child(userid).child(`photos/${key}`).child('animalweight').set(animalweight);
-
             database.ref('users').child(userid).child(`photos/${key}`).child('animalbreed').set(animalbreed);
-
-           // database.ref('users').child(userid).child(`photos/${key}`).child('posted').set(posted);
-
-            //database.ref('users').child(userid).child(`photos/${key}`).child('url').set(url);
-
 
 
             Alert.alert(

@@ -130,23 +130,7 @@ export default class AnimalScreen extends React.Component {
       
       
        }
-       del = (id1) =>{
-        const userid=f.auth().currentUser.uid
-      
-       var query = database.ref('users').child(userid).child(`photos/${id1}`)
-        query.on('child_added', function(snapshot)
-        {
-          snapshot.ref.remove();
-
-       });
-         
-
-
-
-
-      
-      
-      } ;
+   
 
       
          shop=(id)=>{
@@ -176,7 +160,18 @@ export default class AnimalScreen extends React.Component {
           //clicking out side of alert will not cancel
         );
       }
+      del = (id1) =>{
+        const userid=f.auth().currentUser.uid
       
+       var query = database.ref('users').child(userid).child(`photos/${id1}`)
+        query.on('child_added', function(snapshot)
+        {
+          snapshot.ref.remove();
+
+       });
+      
+      
+      } ;
         
 
     render() {
@@ -192,18 +187,6 @@ export default class AnimalScreen extends React.Component {
                   
                  }}>
                   
-<View>
-
-                    <TouchableOpacity  onPress={()=> this.props.navigation.navigate("Mychats")} >
-                    <Fontisto   name="messenger" size={22} color="#C0C0C0"  />
-                    </TouchableOpacity>
-
-                    <Badge
-                     value="5"
-                     status="error"
-                     containerStyle={{ position: 'absolute', top: -5, right: -2 }}
-                        />
-</View>
 
                     </View>
     </View>

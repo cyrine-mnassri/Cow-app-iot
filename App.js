@@ -5,43 +5,29 @@ import {createAppContainer, createSwitchNavigator} from "react-navigation";
 import {createStackNavigator} from "react-navigation-stack";
 import {createBottomTabNavigator} from "react-navigation-tabs";
 import {Ionicons,Entypo,MaterialIcons ,AntDesign,Fontisto,MaterialCommunityIcons} from "@expo/vector-icons";
-import { createDrawerNavigator } from "react-navigation-drawer";
 import loadingscreens from "./screens/loadingscreens";
 import OnboardingScreen from "./screens/OnboardingScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import Forgot from './screens/Forgot';
-
-
 import Screen1 from "./screens/Screen1";
 import Screen2 from "./screens/Screen2";
-import Screen3 from "./screens/Screen3";
-import Screen4 from './screens/Screen4';
+
 import ProfileAdminScreen from "./screens/ProfileAdminScreen";
-
-
 import AnimalScreen from "./screens/AnimalScreen";
 import EditScreen from "./screens/EditScreen";
 import HealthReport from "./screens/HealthReport";
-
 import VetsScreen from "./screens/VetsScreen";
 import AddAnimalScreen from "./screens/AddAnimalScreen";
 import TrakingScreen from "./screens/TrakingScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import ScanScreen from "./screens/ScanScreen";
-import DetailsScreen from "./screens/DetailsScreen";
-
 import {decode, encode} from 'base-64'
-import { FontAwesome5 } from '@expo/vector-icons'; 
-import ScanScreen1 from './screens/ScanScreen1';
 import AddCattleToShopScreen from './screens/AddCattleToShopScreen';
 import CommentsScreen from './screens/CommentsScreen';
-import UserProfil from './screens/UserProfil';
 import shops from './screens/shops';
 import UpdateScreen from './screens/UpdateScreen';
-import DoctorDetailsScreen from './screens/DoctorDetailsScreen';
 import ChatScreen from './screens/ChatScreen';
-import MyCowsAddedToShop from './screens/MyCowsAddedToShop';
 import RegisterOptionScreen from './screens/RegisterOptionScreen';
 import MychatsScreen from './screens/MychatsScreen';
 
@@ -160,12 +146,7 @@ const ed =  createStackNavigator({
  });
 
 
- const MyCowsAdded =  createStackNavigator({
-    MyCowsShop:MyCowsAddedToShop,
-   
  
- });
-
 
 
 
@@ -187,12 +168,7 @@ const report =  createStackNavigator({
 
 
     });
-    const Dcdetails = createStackNavigator({
-        DoctorDetails: DoctorDetailsScreen,
-    
-    
-        });
-  
+   
  
  const Scan =  createStackNavigator({
     scan : ScanScreen,
@@ -201,19 +177,9 @@ const report =  createStackNavigator({
     
    
   });
-  const Scan1 =  createStackNavigator({
-    scan1 : ScanScreen1
-    
-    
-   
-  });
+ 
 
-  const dt =  createStackNavigator({
-    Details : DetailsScreen
-    
-    
-   
-  });
+
   const ch =  createStackNavigator({
     Chat : ChatScreen
     
@@ -240,20 +206,7 @@ const Admin = createStackNavigator(
                     }
                 },
                 
-              
-                Screen3: {
-                    screen: Screen3,
-                    navigationOptions: {
-                        tabBarIcon: ({tintColor}) => <AntDesign name="solution1" size={24} color={tintColor}/>
-                    }
-                },
-                Screen4: {
-                    screen: Screen4,
-                    navigationOptions: {
-                        tabBarIcon: ({tintColor}) => <MaterialIcons name="shopping-cart" size={24} color={tintColor}/>
-                      
-                    }
-                },
+            
                 ProfileAdmin: {
                     screen: ProfileAdminScreen,
                     navigationOptions: {
@@ -283,11 +236,7 @@ const Admin = createStackNavigator(
     }
 );
 
-const UsProfil =  createStackNavigator({
-    userprofil:UserProfil
- 
- 
- });
+
 
 
 
@@ -302,15 +251,14 @@ export default createAppContainer(
             Admin: Admin,
             rep:report,
             scan:Scan,
-            scan1:Scan1,
         //    sp:sp,
-            Usp:UsProfil,
             ok:ok,
             addToshop:addToshop,
           //  AddAnimal:AddAnimal
-            ed:ed,dt:dt,
-up:up,Dcdetails:Dcdetails,ch:ch,
-MyCowsAdded:MyCowsAdded,mychats:mychats
+            ed:ed,
+           up:up,
+            ch:ch,
+            mychats:mychats
             
         },
         {

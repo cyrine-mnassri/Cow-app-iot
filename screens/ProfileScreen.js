@@ -1,9 +1,11 @@
 
 import React from "react";
-import {Ionicons} from "@expo/vector-icons";
 import {TextInput, View, Text, StyleSheet, Button, Image, FlatList, TouchableOpacity} from "react-native";
 import {f, auth, database, storage} from "../config/config.js"
-
+import RBSheet from "react-native-raw-bottom-sheet";
+import { Ionicons,FontAwesome5 ,Entypo,MaterialIcons,Feather,Fontisto,FontAwesome,Foundation,MaterialCommunityIcons,AntDesign} from "@expo/vector-icons";
+import * as Permissions from 'expo-permissions';
+import * as ImagePicker from "expo-image-picker";
 import {LogBox} from 'react-native';
   LogBox.ignoreAllLogs();
 
@@ -13,7 +15,9 @@ export default class ProfileScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loaded: false
+            loaded: false,         
+            imageSelected: false,
+
         }
 
     }
@@ -35,7 +39,88 @@ export default class ProfileScreen extends React.Component {
         });
 
     };
+    _checkPermissions = async() => {
+        const {status} = await Permissions.askAsync(Permissions.CAMERA);
+        this.setState({camera: status});
 
+        const {statusRoll} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        this.setState({cameraRoll: statusRoll});
+
+
+    };
+    uniqueId = () => {
+        return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' +
+            this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-'
+    };
+    s4 = () => {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+
+    };
+    findNewImageCamera = async()=> {
+
+        this._checkPermissions();
+
+        let result = await ImagePicker.launchCameraAsync({
+            mediaTypes: 'Images',
+            allowsEditing: true,
+            quality: 1
+        });
+        console.log(result);
+
+        if (!result.cancelled) {
+            console.log('upload image');
+            // this.uploadImage(result.uri);
+            this.setState({
+                imageSelected: true,
+                imageId: this.uniqueId(),
+                uri: result.uri,
+             
+
+            })
+
+        } else {
+            console.log('cancel');
+            this.setState({
+                imageSelected: false
+            })
+
+        }
+
+    };
+    findNewImageGallery = async()=> {
+
+        this._checkPermissions();
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: 'Images',
+            allowsEditing: true,
+            quality: 1
+        });
+        console.log(result);
+
+        if (!result.cancelled) {
+            console.log('upload image');
+            // this.uploadImage(result.uri);
+            this.setState({
+                imageSelected: true,
+                imageId: this.uniqueId(),
+                uri: result.uri,
+              
+
+            })
+
+        } else {
+            console.log('cancel');
+            this.setState({
+                imageSelected: false
+            })
+
+        }
+
+    };
+ 
     checkParams = () => {
         var params = this.props.navigation.state.params;
         if (params) {
@@ -68,6 +153,7 @@ export default class ProfileScreen extends React.Component {
     saveProfile = () =>{
         var name = this.state.name;
         var username = this.state.username;
+        var avatar = this.state.uri;
 
         if(name!== ''){
             database.ref('users').child(this.state.userId).child('name').set(name);
@@ -78,9 +164,12 @@ export default class ProfileScreen extends React.Component {
 
         }
 
+            database.ref('users').child(this.state.userId).child('avatar').set(avatar);
+        
         this.setState({editingProfile: false});
 
     };
+
 
     logoutUser = () => {
         f.auth().signOut();  
@@ -104,22 +193,81 @@ export default class ProfileScreen extends React.Component {
 
                 ) : (
                     <React.Fragment>
-                        <View style={{ marginTop: 64, alignItems: "center" }}>
-                            <View style={styles.avatarContainer}>
+                     
 
-                              
+                        <View style={{ marginTop: 64, alignItems: "center"}}>
+                            <View style={styles.avatarContainer}>
+                                <Image
+                                    source={
+                                       this.state.uri
+                                     ? { uri: this.state.uri }
+                                  : require("../assets/tempAvatar.jpg")
+                                                             }
+                                    style={styles.avatar}
+                                />
+ 
+                          </View>
+
+
+
+
+
+            <View style={{flexDirection:"row"}}>
+              <TouchableOpacity  onPress={() => this.RBSheet.open()}  style={{marginTop: -35,resizeMode:'cover' ,width:50,height:50,borderRadius:10,alignContent:"center",justifyContent:"center",alignItems:"center" ,marginLeft:80}}  >
+               <Ionicons name="md-camera" size={40} color="#C4C9C7"></Ionicons>
+               </TouchableOpacity>
+           <RBSheet
+          ref={ref => {
+            this.RBSheet = ref;
+          }}
+          height={300}
+          openDuration={250}
+          customStyles={{
+            container: 
+            {
+
+              justifyContent: "center",
+              alignItems: "center",
+              borderTopLeftRadius:15,borderTopRightRadius:15
+
+            }
+          }}
+        >
+
+<View style={styles.panel}>
+      <View style={{alignItems: 'center'}}>
+        <Text style={styles.panelTitle}>Choose Option</Text>
+        <Text style={styles.panelSubtitle}></Text>
+
+      </View>
+      <TouchableOpacity onPress={()=> this.findNewImageCamera()}   style={styles.panelButton}>
+        <Text style={styles.panelButtonTitle}>Open Camera</Text>
+      </TouchableOpacity>
+      <TouchableOpacity  onPress={()=> this.findNewImageGallery()}  style={styles.panelButton1} >
+        <Text style={styles.panelButtonTitle}>Select From Gallery</Text>
+      </TouchableOpacity>
+   
+    </View>
+   
+        </RBSheet>
+
+
                             </View>
+                            <View style={{flexDirection:"row"}}> 
                             <Text style={styles.name}>{this.state.name}</Text>
                             <Text style={styles.name}>{this.state.username}</Text>
-
+                            </View>
                         </View>
+
+                      
+
                         {this.state.editingProfile == true ? (
                             <View
                                 style={{alignItems:'center',justifyContent:'center',paddingBottom : 20 , borderBottomWidth:2}}>
                                 <TouchableOpacity onPress={() => this.setState({editingProfile: false})}>
                                     <Text style={{fontWeight:'bold'}}>Cancel Editing</Text>
                                 </TouchableOpacity>
-                                <Text>Name:</Text>
+                                <Text>Name</Text>
                                 <TextInput
                                     editable={true}
                                     placeholder={'Enter your name'}
@@ -128,7 +276,7 @@ export default class ProfileScreen extends React.Component {
                                     style={{width:250, marginVertical:10, padding:5, borderColor:'grey', borderWidth:1 }}
                                 />
 
-                                <Text>Username:</Text>
+                                <Text>Username</Text>
                                 <TextInput
                                     editable={true}
                                     placeholder={'Enter your username'}
@@ -144,20 +292,46 @@ export default class ProfileScreen extends React.Component {
                            
                             </View>
                         ) : (
-                            <View style={{paddingBottom : 20 , borderBottomWidth:2}}>
-                                <TouchableOpacity
-                                    onPress={() =>this.logoutUser()}
-                                    style={{marginTop:10,marginHorizontal:40, paddingVertical:15,borderRadius:20, borderColor: 'grey', borderWidth:1.5}}>
-                                    <Text style={{textAlign:'center', color:'grey'}}>Logout</Text>
-                                </TouchableOpacity>
+                            <View   style={{marginLeft:10,marginTop:20}}  >
+                        
+
+                             <View style={{flexDirection:"row"}}> 
+                            <View style={{marginBottom:10, width:60, height:60,borderRadius:40,backgroundColor:"#F0C300",marginLeft:10,justifyContent:"center",alignItems:"center"}} >
 
                                 <TouchableOpacity
                                     onPress={() =>this.editProfil()}
-                                    style={{marginTop:10,marginHorizontal:40, paddingVertical:15,borderRadius:20,borderColor: 'grey', borderWidth:1.5}}>
-                                    <Text style={{textAlign:'center', color:'grey'}}>Edit Profil</Text>
+                                    style={{height:50,width:50, justifyContent:"center",alignItems:"center"}}>
+                       <FontAwesome5 name="user-edit" size={25} color="#fff" ></FontAwesome5>
                                 </TouchableOpacity>
+                              </View>
+                              <Text style={{marginBottom:10,marginLeft:10,fontSize:15 ,marginTop:15,fontWeight:"600"}}>Edit Profile</Text>
 
-                              
+                              </View>
+                              <View style={{flexDirection:"row"}}> 
+                              <View style={{marginBottom:10,width:60, height:60,borderRadius:40,backgroundColor:"#008000",marginLeft:10,justifyContent:"center",alignItems:"center"}} >
+
+                              <TouchableOpacity
+                              onPress={()=> this.props.navigation.navigate("Mychats")} 
+                              style={{height:50,width:50, justifyContent:"center",alignItems:"center"}}>
+                             <Entypo name="chat" size={25} color="#fff" ></Entypo>
+                             </TouchableOpacity>
+                             </View>
+                             <Text style={{marginBottom:10,marginLeft:10,fontSize:15 ,marginTop:15,fontWeight:"600"}}>My chats</Text>
+
+                          </View>
+                          <View style={{flexDirection:"row"}}> 
+                              <View style={{marginBottom:10, width:60, height:60,borderRadius:40,backgroundColor:"#BB0B0B",marginLeft:10,justifyContent:"center",alignItems:"center"}} >
+
+                                <TouchableOpacity
+                                    onPress={() =>this.logoutUser()}
+                                    style={{height:50,width:50, justifyContent:"center",alignItems:"center"}}>
+                                  <MaterialCommunityIcons name="logout-variant" size={25} color="#fff" ></MaterialCommunityIcons>
+                                </TouchableOpacity>
+                             </View>
+                             <Text style={{marginBottom:10,marginLeft:10,fontSize:15 ,marginTop:15,fontWeight:"600"}}>Logout</Text>
+
+                             </View>
+
 
                             </View>
 
@@ -187,7 +361,52 @@ const styles = StyleSheet.create({
     name: {
         marginTop: 24,
         fontSize: 16,
-        fontWeight: "600"
+        fontWeight: "600",
+        marginLeft:10,
+        marginBottom:10
     },
-  
+    avatar: {
+        width: 136,
+        height: 136,
+        borderRadius: 68
+    },
+    panelHeader: {
+        alignItems: 'center',
+      },
+      panelHandle: {
+        width: 40,
+        height: 8,
+        borderRadius: 4,
+        backgroundColor: '#00000040',
+        marginBottom: 10,
+      },
+      panelTitle: {
+        fontSize: 27,
+        height: 35,
+      },
+      panelSubtitle: {
+        fontSize: 14,
+        color: 'gray',
+        height: 30,
+        marginBottom: 10,
+      },
+      panelButton: {
+        padding: 13,
+        borderRadius: 10,
+        backgroundColor: '#008000',
+        alignItems: 'center',
+        marginVertical: 7,
+      },
+      panelButton1: {
+        padding: 13,
+        borderRadius: 10,
+        backgroundColor: '#008000',
+        alignItems: 'center',
+        marginVertical: 7,
+      },
+      panelButtonTitle: {
+        fontSize: 17,
+        fontWeight: 'bold',
+        color: 'white',
+      },
 });

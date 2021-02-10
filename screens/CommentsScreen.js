@@ -138,25 +138,14 @@ export default class CommentsScreen extends React.Component {
     };
 
     static navigationOptions = ({ navigation }) => {
-        return {
-          
-          headerRight: (
-            <TouchableHighlight onPress={navigation.getParam('logout')}>
-                       <AntDesign name="close" size={25} color="#73788B"  />
+      return {
+          headerShown:false,
 
-            </TouchableHighlight>
-          )
-        };
+       
       };
-
-    _logout = () => {
-        this.props.navigation.navigate('shops');
-      }
-    
-
+    };
 
     componentDidMount = ()=> {
-        this.props.navigation.setParams({ logout: this._logout });
 
         const { navigation } = this.props;  
 
@@ -164,10 +153,7 @@ export default class CommentsScreen extends React.Component {
                // const user_name = navigation.getParam('value','');
                var  params=user_name;
                 if (params) {
-                    
-                     
-                        this.fetchComments(params);
-                    
+                        this.fetchComments(params);   
                 }
 
 
@@ -224,6 +210,12 @@ export default class CommentsScreen extends React.Component {
     render() {
         return (
            <View>
+               <View style={styles.header}>
+                    <Text style={styles.headerTitle}>Comments </Text>
+                    <TouchableOpacity  style={styles.headerTitle} onPress={()=>this.props.navigation.navigate('shops')}>
+                    <AntDesign name="close" size={25} color="#73788B"  />
+                    </TouchableOpacity>
+                    </View>
             <View style={{ flexDirection: "row" ,marginTop:10,}}>
 
               <TextInput
@@ -252,17 +244,14 @@ export default class CommentsScreen extends React.Component {
               const Notification = item.item;
               return(
                 <View style={styles.container}>
-                  <TouchableOpacity onPress={() => {}}>
-                    <Image style={styles.image} source={{uri: Notification.authorAvatar}}/>
-                  </TouchableOpacity>
-
+                 
                   <View style={styles.content}>
                     <View style={styles.contentHeader}>
                       <Text  style={styles.name}>{Notification.author}</Text>
                       <Text style={styles.time}>  {Notification.posted}                      </Text>
 
                     </View>
-                    <Text rkType='primary3 mediumLine'>{Notification.comment}</Text>
+                    <Text rkType='primary3 mediumLine' style={{marginLeft:10}}>{Notification.comment}</Text>
 
                   </View>
 
@@ -321,5 +310,28 @@ export default class CommentsScreen extends React.Component {
         fontSize:16,
         fontWeight:"bold",
       },
+      header: {
+        paddingTop:40,
+        paddingBottom: 16,
+        backgroundColor: "#FFF",
+        alignItems: "center",
+        justifyContent: "center",
+        borderBottomWidth: 1,
+        borderBottomColor: "#EBECF4",
+        shadowColor: "#454D65",
+        shadowOffset: {height: 5},
+        shadowRadius: 15,
+        shadowOpacity: 0.2,
+        zIndex: 10,
+        flexDirection:"row",
+        justifyContent:"space-between",
+        
+    },
+    headerTitle: {
+        marginRight:20,
+        marginLeft:20,
+        fontSize: 15,
+        fontWeight: "700"
+    },
     }); 
                                       

@@ -18,7 +18,8 @@ export default class VetsScreen extends Component {
   constructor() {
     super();
     this.state = {
-      
+      idididuser : f.auth().currentUser.uid,
+
       dataSource: [],
       loaded: false,
       phoneNumber:"",
@@ -143,7 +144,8 @@ export default class VetsScreen extends Component {
                         style={{flex:1, backgroundColor:'#fff',marginHorizontal:7,borderRadius:12,marginVertical:7}}
                         renderItem={({item, index}) => (
                         <View key={index} style={{width:'100%', overflow:'hidden', marginBottom:5, justifyContent:'space-between', borderBottomWidth:1, borderColor:'grey'}}>
-                        <View style={{padding:5,width: '100%',flexDirection:'row', justifyContent: 'space-between'}}>
+                     
+                       <View style={{padding:5,width: '100%',flexDirection:'row', justifyContent: 'space-between'}}>
                              
                         <Image
                            source={
@@ -153,23 +155,22 @@ export default class VetsScreen extends Component {
                              }
                              style={{width:60, height:60,borderRadius:30,marginLeft:10,margin:20,marginTop:10}} 
                                 />
+                                                          
+
                                 <View style={{padding:20,paddingRight:80,width: '100%',flexDirection:"column", justifyContent: 'space-between'}}>
+                              
                               <Text>{item.prenom}  {item.nom}  </Text>
 
                               <Text>{item.adresse} </Text>
                               <Text>{item.specialite} </Text>
 
                              </View>
+                             
+                             
                           </View>
+                          
                           <View  style={{flex:1,flexDirection:"row-reverse",marginBottom:10,marginLeft:10}}>
-                              <View style={{width:45, height:45,borderRadius:25,backgroundColor:"#94001b",marginLeft:10,justifyContent:"center",alignItems:"center"}} >
-                          <TouchableOpacity  onPress={()=> this.goToDoctorDetails(item.id)} style={{height:50,width:50, justifyContent:"center",alignItems:"center"}}>
-                  
-                  <FontAwesome5 name="question" size={25} color="#ffffff" ></FontAwesome5>
-
-              </TouchableOpacity>
-
-              </View>
+                      
 
               <View style={{width:45, height:45,borderRadius:25,backgroundColor:"#F0C300",marginLeft:10,justifyContent:"center",alignItems:"center"}} >
 
@@ -188,6 +189,8 @@ export default class VetsScreen extends Component {
                </TouchableOpacity>
                </View>
                               </View>
+
+                         
                      </View>
                        
                         )}

@@ -258,29 +258,7 @@ export default class AddCattleToShopScreen extends React.Component {
 
     componentDidMount(){
 
-        const { navigation } = this.props;  
-        const user_name = navigation.getParam('ok','');
-        const userid=f.auth().currentUser.uid
-        const key=user_name
-        database.ref('users').child(userid).child(`photos/${key}`).on('value', (snapshot) =>{
-         
-       this.setState({
        
-        
-        animaltype : snapshot.val().animaltype,
-        animalreference :snapshot.val().animalreference,
-        animalweight: snapshot.val().animalweight,
-        animalbirth :snapshot.val().animalbirth, 
-        animalbreed :snapshot.val().animalbreed,
-        animalhealth :snapshot.val().animalhealth,
-         url: snapshot.val().url
-
-
-
-
-
-        })
-      })
 
 
 }

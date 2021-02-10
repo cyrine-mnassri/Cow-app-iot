@@ -204,14 +204,10 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         textAlign: "center"
     } ,
-   
-   
-    
     image:{
     flex: 1,
     resizeMode: "cover",
     justifyContent: "center",
-    
     width:null,
     height:700
     }

@@ -37,7 +37,6 @@ export default class Screen2 extends Component {
         key: child.key,
         nom:child.val().nom,
         prenom:child.val().prenom,
-
         email:child.val().email,
         image:child.val().url
         
@@ -54,26 +53,8 @@ export default class Screen2 extends Component {
  
       let ttest10=database.ref('vets').child(id1);
       ttest10.remove();
-     
-
-   
+  
 } ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -128,7 +109,7 @@ _twoOptionAlertHandler=(id)=>{
 
         <View style={styles.header}>
            
-          <Text style={styles.find}>Find vet</Text>
+          <Text style={styles.find}>Find user</Text>
 
           <TextInput
             placeholder="Enter vet name"
